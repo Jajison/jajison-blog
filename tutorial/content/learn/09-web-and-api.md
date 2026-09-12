@@ -39,6 +39,33 @@ tags: [网页, API, 开发]
 
 收到 200 不意味着内容一定正确。服务可以顺利返回一个计算错误或缺少关键信息的结果，仍需业务验收。
 
+## 把请求拆开看
+
+HTTP 请求中的方法表达操作意图：GET 通常读取，POST 通常提交供服务处理的数据；具体能力由接口约定。路径指向资源，查询参数常用于筛选；请求头描述格式与认证，正文携带结构化输入。JSON 只是常见内容格式，HTTP 也能传图片、文本或文件。
+
+浏览器开发者工具的 Network/网络面板可以看到请求地址、状态、请求头和响应。Windows 常用 F12 或 Ctrl+Shift+I，Mac 常用 Option+Command+I，具体看浏览器菜单。先打开网络面板再刷新自己的练习页面，找到 todo.html，查看它从哪一个地址加载。不要把带 Cookie 或 Authorization 的请求截图公开。
+
+## 真正运行一次本地 API
+
+下载并解压 [练习包](../downloads/ai-workshop.zip)。在根目录的第一个终端启动：
+
+~~~sh
+python3 api_lab.py --port 8001
+~~~
+
+Windows 把 python3 换成 py -3。终端显示 READY 与本地地址后保持运行。在浏览器打开 [健康检查](http://127.0.0.1:8001/api/health)，应看到服务状态。再打开第二个终端，进入同一个练习目录，运行：
+
+~~~sh
+python3 api_client.py --port 8001 --status done
+python3 api_client.py --port 8001 --input input/records.json
+~~~
+
+第一条发出 GET /api/tasks?status=done，筛出三条已完成记录、共 90 分钟；第二条读取四条教学记录，POST 到 /api/summarize，返回总数 4、已完成 3、待办 1、总耗时 120、已完成耗时 90。用 [Python 课](07-python.md)的本地计算结果核对，它们应该一致。
+
+这是真实 HTTP 通信，只在本机发生，没有调用 AI，也不保存提交数据。完成后在服务终端按 Control+C 停止，再运行客户端，观察“连接失败”与“数据内容错误”的区别。端口被占用时换成 8002，并同时修改服务和客户端参数。
+
+本地演示服务不等于生产后端：公开服务还需要认证、输入限额、日志、并发控制与部署维护，继续读 [网络与密钥](../guides/network-and-security.md)、[数据与 SQL](../guides/data-and-sql.md)和 [测试与交付](../guides/testing-and-delivery.md)。
+
 ## 本地地址是什么
 
 localhost 和 127.0.0.1 通常指当前电脑。地址后的 :8000 是端口，用来区分这台电脑上的不同服务。http://127.0.0.1:8000 并不是自动对外发布的网址。
@@ -72,4 +99,3 @@ localhost 和 127.0.0.1 通常指当前电脑。地址后的 :8000 是端口，�
 参考：[MDN：你的第一个网站](https://developer.mozilla.org/en-US/docs/Learn_web_development/Getting_started/Your_first_website)。
 
 [上一课](08-debugging.md) · [下一课：Git 与 GitHub →](10-git-and-github.md)
-

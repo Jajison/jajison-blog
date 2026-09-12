@@ -2,6 +2,7 @@
 from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
 from urllib.parse import urlsplit, unquote
+import argparse
 
 ROOT = Path(__file__).resolve().parents[1] / 'public'
 PREFIX = '/jajison-blog'
@@ -21,8 +22,16 @@ class PagesHandler(SimpleHTTPRequestHandler):
         return str(target)
 
 if __name__ == '__main__':
-    print('Preview: http://127.0.0.1:8765/jajison-blog/ (Ctrl+C to stop)', flush=True)
+    parser = argparse.ArgumentParser(description='在本机预览 GitHub Pages 子路径。')
+    parser.add_argument('--port', type=int, default=8765)
+    args = parser.parse_args()
+    if not 0 <= args.port <= 65535:
+        parser.error('--port 必须介于 0 和 65535（0 表示自动选择）。')
+    server = ThreadingHTTPServer(('127.0.0.1', args.port), PagesHandler)
+    print(f'Preview: http://127.0.0.1:{server.server_port}/jajison-blog/ (Ctrl+C to stop)', flush=True)
     try:
-        ThreadingHTTPServer(('127.0.0.1', 8765), PagesHandler).serve_forever()
+        server.serve_forever()
     except KeyboardInterrupt:
         print('\nPreview stopped.')
+    finally:
+        server.server_close()

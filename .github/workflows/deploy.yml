@@ -33,6 +33,8 @@ jobs:
         run: |
           python3 tutorial/tools/check_content.py
           python3 tutorial/tools/check_examples.py
+      - name: Test calculations and rendering
+        run: npm test
       - name: Build the blog
         run: npm run build
       - name: Verify types, pages, links and downloads

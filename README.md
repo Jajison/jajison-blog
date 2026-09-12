@@ -1,65 +1,52 @@
 # Jajison · 把 AI 用起来
 
-给零编程基础读者的 AI 实用教程：从第一份能核对的成果，到自己的小工具。20 篇短课，5 个阶段，3 个实战项目。
+从 Windows/macOS、GitHub 与编程基础，到 Transformer、LLM、RAG、Agent 和质量交付的中文学习知识库。八条路线、20 篇课程与 16 篇指南，配套三个完整项目、原理实验和可运行代码。
 
-博客地址：**https://jajison.github.io/jajison-blog/**
+博客目标地址：[jajison.github.io/jajison-blog](https://jajison.github.io/jajison-blog/)。本地修改、构建成功与线上已更新是不同状态，实际验证见 [记录](tutorial/editorial/validation.md)。
 
-## 在哪里改内容
+## 维护入口
 
-- `tutorial/content/learn/`：20 篇课程正文。
-- `tutorial/content/projects/`：3 个实战项目。
-- `tutorial/content/start.md`：学习路线。
-- `tutorial/content/assets/`：原创 SVG 解释图。
-- `tutorial/content/downloads/`：练习源码与下载包。
-- `quartz/components/Tutorial.tsx`：首页、课程导航和页面结构；课程列表读取正文元数据。
-- `quartz/styles/custom.scss`：中文排版、浅深配色和手机布局。
-- `quartz.config.yaml`：标题、站点地址与 Quartz 插件。
-- `.github/workflows/deploy.yml`：推送 `v5` 后自动构建与发布。
+- [路线配置](tutorial/curriculum.json)：页面归属、阅读顺序与导航计数。
+- [学习路线](tutorial/content/start.md)：按读者起点组织入口。
+- [课程](tutorial/content/learn/)与[指南](tutorial/content/guides/)：内容正文；保留已有 slug。
+- [项目](tutorial/content/projects/)与[练习包](tutorial/content/downloads/workshop/README.md)：可运行的端到端任务。
+- [Tutorial.tsx](quartz/components/Tutorial.tsx)：首页、路线、导航和文章框架。
+- [custom.scss](quartz/styles/custom.scss)：中文排版、主题、移动端布局。
+- [定位与标准](tutorial/editorial/positioning.md)、[发布说明](tutorial/editorial/publishing.md)：持续维护要求。
 
-本仓库是后续维护位置。无须再从旧的 ToFindWork 目录复制文件。
+实际构建目录是 tutorial/content。根目录 content 与 docs 来自 Quartz，不是此博客的发布入口。用户指定的本地知识笔记仅作参考，不会自动复制或发布。
 
-## 本地预览
+## 本地运行
 
-使用 Node.js 24、npm 10.9.2 或更高版本。Python 检查脚本只使用标准库。
+建议使用与 CI 一致的 Node.js 24 和 npm 10.9.2 或更高版本；项目 engines 的最低 Node 版本为 22。Python 检查与练习使用标准库。
 
 ```sh
 npm ci
 npm run dev
 ```
 
-打开终端显示的本地网址。按 Ctrl+C 停止预览。
-
-要模拟 GitHub Pages 的 `/jajison-blog/` 路径：
+打开终端显示的预览地址。按 Control+C 停止。检查正式子路径时：
 
 ```sh
 npm run build
 python3 scripts/preview_blog.py
 ```
 
-打开 http://127.0.0.1:8765/jajison-blog/ 。这个预览只绑定本机地址。
+打开 [本机预览](http://127.0.0.1:8765/jajison-blog/)。Windows 按已安装解释器，将 python3 换为 py -3 或 python。
 
-## 检查与更新
+## 检查与发布
 
 ```sh
+python3 tutorial/tools/package_workshop.py
 python3 tutorial/tools/check_content.py
 python3 tutorial/tools/check_examples.py
+npm test
 npm run build
 npm run check:blog
 ```
 
-修改练习源码后，先执行 `python3 tutorial/tools/package_workshop.py` 更新 ZIP。修改图示生成器后，先执行 `python3 tutorial/tools/make_diagrams.py`。
+修改练习源码需重建 ZIP；修改图示生成器需重新生成图示。内容检查核对课程清单、前置关系与链接，示例检查核对真实输出与失败行为，构建产物检查核对页面、资源、子路径、搜索和下载。交互变化还须在桌面与手机尺寸做浏览器验收。
 
-文章更新后：
+确认差异、验证记录与待发布范围后再提交推送。推送 v5 会触发 [部署工作流](.github/workflows/deploy.yml)，检查通过后发布 GitHub Pages。不要仅凭本地构建成功就宣称已经上线。
 
-```sh
-git add tutorial
-git diff --cached --stat
-git commit -m "更新教程内容"
-git push
-```
-
-在仓库 Actions 中查看 **Publish blog to GitHub Pages**。构建、检查与部署全部成功后，页面才会更新。修改样式或配置时，也要将对应文件加入提交。
-
-文章和项目参与全文搜索。练习包内的源码和虚构资料按原文件提供下载，不作为博客文章编入搜索结果。没有登录、付费、评论或访问统计。
-
-框架使用 [Quartz 5](https://quartz.jzhao.xyz/)，保留其 MIT 许可证。站点视觉参考 Walter's Tech Blog 的清晰导航与阅读层次；教程正文与解释图独立编写。
+文章参与全文搜索；练习源码按原文件提供下载。阅读进度在本浏览器保存，不同步账号。站点无登录、付费、评论或访问统计。框架使用 [Quartz 5](https://quartz.jzhao.xyz/)，保留其 MIT 许可证；内容与交互遵循本站教学定位。

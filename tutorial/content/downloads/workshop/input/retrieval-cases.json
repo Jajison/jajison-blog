@@ -1,0 +1,9 @@
+[
+  {"id": "R01", "query": "报名 截止", "relevant": ["event-guide.md:L3", "event-guide.md:L6"]},
+  {"id": "R02", "query": "名额 上限", "relevant": ["event-guide.md:L4"]},
+  {"id": "R03", "query": "status", "relevant": ["report-guide.md:L3", "report-guide.md:L4"]},
+  {"id": "R04", "query": "活动 日期", "relevant": ["event-guide.md:L5"]},
+  {"id": "R05", "query": "餐费 报销", "relevant": []},
+  {"id": "R06", "query": "预算 审批", "relevant": []},
+  {"id": "R07", "query": "什么时候停止报名？", "relevant": ["event-guide.md:L3", "event-guide.md:L6"]}
+]

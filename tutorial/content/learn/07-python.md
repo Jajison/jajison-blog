@@ -1,6 +1,6 @@
 ---
-title: "07｜Python 最小集合：读数据、做判断、写结果"
-description: "围绕一份工作记录，只认识变量、列表、字典、循环和条件。"
+title: "07｜Python 数据处理：读数据、做判断、写结果"
+description: "通过工作记录理解类型、列表、字典、循环、函数、输入校验与文件输出。"
 lesson: 7
 stage: "02 让电脑重复做事"
 duration: 25
@@ -9,7 +9,7 @@ outcome: "能预览、保存并核对一份自动汇总报告"
 tags: [Python, 数据处理]
 ---
 
-# Python 最小集合：读数据、做判断、写结果
+# Python 数据处理：读数据、做判断、写结果
 
 **这一课做成什么**：能预览、保存并核对一份自动汇总报告。
 
@@ -57,6 +57,27 @@ print(done_minutes)
 
 完整脚本额外处理读取 JSON、检查字段和保存文件。这些步骤由程序重复完成，人负责确认规则正确。
 
+## 把程序拆成输入、规则与输出
+
+变量指向某个值，`45` 是整数，`"45"` 是字符串；`=` 做赋值，`==` 做比较。字典按字段名取值，列表按从 0 开始的位置索引：`records[0]["task"]` 读取第一条的任务名。访问不存在的字段或位置可能报错，不会自动猜出正确内容。
+
+函数把一段规则命名并接收参数。下面函数不读取文件、不打印、不修改 records，只计算并返回一个数：
+
+~~~python
+def completed_minutes(records):
+    total = 0
+    for record in records:
+        if record["status"] == "done":
+            total += record["minutes"]
+    return total
+~~~
+
+`return` 把结果交给调用者；`print` 只负责显示。这样可以分别测试“计算规则对不对”和“文件能不能读写”，不用每改一次总数公式就处理一遍终端或网页。
+
+数据校验应该放在计算之前：顶层是列表、每条是对象、id 不重复、status 是允许值、minutes 是非负整数。注意 Python 的 bool 是 int 的子类；严格的分钟数字规则不能把 true 当作 1 分钟。完整脚本已区分这些情况。
+
+文件读取使用 `with open(..., encoding="utf-8")` 的上下文管理方式可在结束时关闭文件。读模式、覆盖写模式和排他创建模式各不相同；本项目输出用排他创建拒绝覆盖，避免反复运行时清空已有成果。大文件还需考虑逐行读取和内存占用，本例只针对小型教学数据。
+
 ## 让 AI 改一个需求
 
 ~~~text
@@ -90,4 +111,3 @@ python3 report.py --input input/records-practice.json
 参考：[Python 官方教程](https://docs.python.org/3/tutorial/)。
 
 [上一课](06-shell.md) · [下一课：读懂报错 →](08-debugging.md)
-

@@ -15,6 +15,8 @@ tags: [环境, Python, 入门]
 
 前面的练习只需浏览器。从这一课开始，我们让电脑执行一个文件。暂时只准备两样东西：Python 和能编辑纯文本的工具。
 
+不知道系统、芯片或文件扩展名，先读 [电脑与操作系统](../guides/computer-and-os.md)；需要逐个安装入口、PATH 与解释器说明，先读 [编辑器与开发环境](../guides/editor-and-environment.md)。这一课把已安装工具连接成一次完整练习。
+
 ## 下载练习包
 
 [下载 ai-workshop.zip](../downloads/ai-workshop.zip)，解压后找到里面的 ai-workshop 文件夹。确认能看到 hello.py、report.py、input 和 README.md。保留压缩包，需要重来时可重新解压到新的位置。
@@ -62,7 +64,7 @@ py -3 hello.py
 
 练习脚本只用 Python 自带模块，不需要 pip 安装第三方包，也不需要显卡、数据库或模型下载。等某个项目确实需要额外依赖时，再看 [报错与虚拟环境](08-debugging.md)。
 
-Shell 练习使用 macOS / Linux 的 sh。Windows 可以先读懂第 06 课，直接动手做 Python；如果希望实际运行 Linux 命令，再按 [微软 WSL 安装文档](https://learn.microsoft.com/en-us/windows/wsl/install)配置 Ubuntu 环境。PowerShell 与 sh 不能直接混用。
+Shell 成品使用 macOS / Linux 的 sh，第 06 课同时提供 PowerShell 对照。Windows 无需额外安装 Linux 就能练习；只有项目需要 Linux 工具时，再按 [微软 WSL 安装文档](https://learn.microsoft.com/en-us/windows/wsl/install)配置 Ubuntu 环境。PowerShell 与 sh 不能直接混用。
 
 ## 动手做
 
@@ -78,4 +80,3 @@ Shell 练习使用 macOS / Linux 的 sh。Windows 可以先读懂第 06 课，�
 </details>
 
 [上一课](03-files-and-formats.md) · [下一课：终端与 Linux →](05-terminal-and-linux.md)
-

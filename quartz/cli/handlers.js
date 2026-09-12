@@ -1,4 +1,3 @@
-import { promises } from "fs"
 import path from "path"
 import esbuild from "esbuild"
 import { styleText } from "util"
@@ -16,6 +15,7 @@ import { randomUUID } from "crypto"
 import { Mutex } from "async-mutex"
 import { CreateArgv } from "./args.js"
 import { globby } from "globby"
+import { inlineScriptLoader } from "./inline-script-loader.js"
 import {
   exitIfCancel,
   escapePath,
@@ -361,39 +361,7 @@ export async function handleBuild(argv) {
         type: "css",
         cssImports: true,
       }),
-      {
-        name: "inline-script-loader",
-        setup(build) {
-          build.onLoad({ filter: /\.inline\.(ts|js)$/ }, async (args) => {
-            let text = await promises.readFile(args.path, "utf8")
-
-            // remove default exports that we manually inserted
-            text = text.replace("export default", "")
-            text = text.replace("export", "")
-
-            const sourcefile = path.relative(path.resolve("."), args.path)
-            const resolveDir = path.dirname(sourcefile)
-            const transpiled = await esbuild.build({
-              stdin: {
-                contents: text,
-                loader: "ts",
-                resolveDir,
-                sourcefile,
-              },
-              write: false,
-              bundle: true,
-              minify: true,
-              platform: "browser",
-              format: "esm",
-            })
-            const rawMod = transpiled.outputFiles[0].text
-            return {
-              contents: rawMod,
-              loader: "text",
-            }
-          })
-        },
-      },
+      inlineScriptLoader(),
     ],
   })
 

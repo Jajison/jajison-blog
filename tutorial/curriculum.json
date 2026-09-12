@@ -1,0 +1,98 @@
+{
+  "tracks": [
+    {
+      "id": "start",
+      "title": "从零认识电脑与 AI",
+      "description": "操作系统、文件、任务表达与信息安全。",
+      "level": "零基础",
+      "pages": [
+        "guides/computer-and-os",
+        "learn/01-first-result",
+        "learn/02-context-and-checks",
+        "learn/03-files-and-formats",
+        "guides/network-and-security"
+      ]
+    },
+    {
+      "id": "workspace",
+      "title": "搭好环境，运行代码",
+      "description": "编辑器、终端、Python、依赖与排错。",
+      "level": "基础实践",
+      "pages": [
+        "guides/editor-and-environment",
+        "learn/04-workspace",
+        "learn/05-terminal-and-linux",
+        "learn/06-shell",
+        "learn/07-python",
+        "learn/08-debugging"
+      ]
+    },
+    {
+      "id": "build",
+      "title": "开发与 GitHub 协作",
+      "description": "网页、HTTP、版本管理、数据与交付。",
+      "level": "基础实践",
+      "pages": [
+        "learn/09-web-and-api",
+        "guides/github-from-zero",
+        "learn/10-git-and-github",
+        "learn/11-build-with-ai",
+        "learn/12-test-and-publish",
+        "guides/data-and-sql"
+      ]
+    },
+    {
+      "id": "foundations",
+      "title": "模型的数学与学习基础",
+      "description": "向量、概率、梯度、神经网络与文本表示。",
+      "level": "原理入门",
+      "pages": [
+        "guides/math-for-ai",
+        "guides/neural-networks",
+        "learn/13-nlp",
+        "guides/tokenization-and-embeddings"
+      ]
+    },
+    {
+      "id": "models",
+      "title": "深入 Transformer 与 LLM",
+      "description": "注意力、位置、训练对齐、推理与多模态。",
+      "level": "专业进阶",
+      "pages": [
+        "learn/14-transformer",
+        "guides/attention-and-position",
+        "learn/15-llm",
+        "guides/training-and-alignment",
+        "guides/inference-and-deployment",
+        "guides/model-selection",
+        "guides/multimodal"
+      ]
+    },
+    {
+      "id": "retrieval",
+      "title": "构建可靠的 RAG",
+      "description": "切分、召回、重排、引用与检索评估。",
+      "level": "工程实践",
+      "pages": ["learn/16-rag", "guides/rag-engineering"]
+    },
+    {
+      "id": "agents",
+      "title": "Agent、工具与运行环境",
+      "description": "控制循环、MCP、权限、记忆与失败恢复。",
+      "level": "工程实践",
+      "pages": [
+        "learn/17-agent",
+        "learn/18-tools-and-mcp",
+        "learn/19-harness",
+        "guides/agent-engineering"
+      ]
+    },
+    {
+      "id": "quality",
+      "title": "评估、测试与持续交付",
+      "description": "基线、失败样本、回归测试与上线门槛。",
+      "level": "工程实践",
+      "pages": ["learn/20-evaluation", "guides/testing-and-delivery"]
+    }
+  ]
+}

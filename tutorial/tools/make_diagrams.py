@@ -1,5 +1,6 @@
 """生成本教程独立绘制的 SVG 解释图，无网络与第三方依赖。"""
 from html import escape
+import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1] / "content/assets"
@@ -38,13 +39,14 @@ def save(name,title,subtitle,body,height=500,caption="Jajison · 把 AI 用起�
 
 
 body=''
-rows=[('01','先用起来','交代任务 → 给资料 → 检查结果'),('02','让电脑重复做事','认识终端 → 运行脚本 → 看懂报错'),('03','和 AI 一起开发','描述需求 → 做小网页 → 测试发布'),('04','理解模型','NLP → Transformer → LLM → RAG'),('05','让 AI 可靠地做事','Agent → 工具 → Harness → 评估')]
+tracks = json.loads((Path(__file__).resolve().parents[1] / 'curriculum.json').read_text(encoding='utf-8'))['tracks']
+rows = [(f'{i+1:02d}', track['title'], track['description']) for i, track in enumerate(tracks)]
 for i,(n,title,desc) in enumerate(rows):
     y=112+i*95
     body+=f'<rect x="30" y="{y}" width="800" height="80" rx="16" fill="white" stroke="#dbe1ee"/>'
     body+=f'<circle cx="72" cy="{y+40}" r="24" fill="#e8edfc"/>'
     body+=text(58,y+47,n,20,BLUE,700)+text(115,y+33,title,23,INK,700)+text(115,y+61,desc,18,MUTED)
-save('learning-route.svg','从一件小事，走到自己的 AI 工作方式','前 3 课即可用于办公；技术与原理按需进阶。',body,640)
+save('learning-route.svg','从电脑基础到 AI 工程：八条学习路径','按前置知识逐步阅读，也可以按当前问题选择入口。',body,112+len(rows)*95+35)
 
 body=box(30,115,385,130,'01 目标',['给谁用？要做什么决定？'])+box(445,115,385,130,'02 资料',['它能依据哪些事实？'])+box(30,270,385,130,'03 约束',['缺信息怎么处理？哪些事不能做？'],GREEN)+box(445,270,385,130,'04 验收',['怎样判断结果可用？'],GREEN)
 save('task-card.svg','一张任务卡，交代四件事','任务说明越可检查，越容易得到可用成果。',body,460)

@@ -21,7 +21,7 @@ configuration:
       code: SFMono-Regular
     colors:
       lightMode:
-        light: "#f7f8fc"
+        light: "#f8f9fc"
         lightgray: "#dfe5ef"
         gray: "#64728a"
         darkgray: "#344057"
@@ -31,7 +31,7 @@ configuration:
         highlight: "#315bd60c"
         textHighlight: "#dbe5ff"
       darkMode:
-        light: "#11151d"
+        light: "#11141b"
         lightgray: "#2b3647"
         gray: "#a2aec3"
         darkgray: "#c4cede"
@@ -68,6 +68,7 @@ plugins:
     options:
       enableInHtmlEmbed: false
       enableCheckbox: true
+      mermaid: false
     order: 30
   - source: "@quartz-community/github-flavored-markdown"
     enabled: true
@@ -86,6 +87,11 @@ plugins:
   - source: "@quartz-community/description"
     enabled: true
     order: 70
+  - source: "@quartz-community/latex"
+    enabled: true
+    order: 80
+    options:
+      renderEngine: mathjax
   - source: "@quartz-community/remove-draft"
     enabled: true
   - source: "@quartz-community/content-index"

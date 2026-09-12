@@ -64,7 +64,32 @@ python3 search_notes.py "餐费 报销"
 
 将验证记录另存到 output，不修改源用例。即使只有五题实际完成，也如实写五题，剩下的标“未验证”。
 
-## 什么时候升级
+## 加一层真正可运行的检索评价
+
+原来的 eval-cases.json 包含人工情境。练习包另有自动评价脚本与固定标注，针对当前关键词检索器运行：
+
+~~~sh
+python3 evaluate_retrieval.py --limit 3
+python3 evaluate_retrieval.py --limit 1 --output output/retrieval-k1.json
+~~~
+
+它逐例比较真实命中的文件行号与标注证据，分别报告正例的 Recall、Precision、MRR，以及无答案例处理结果。当前教学基线含 5 个正例和 2 个无答案例：k=3 的平均 Recall 为 0.8、Precision 为 0.4、MRR 为 0.8；k=1 的平均 Recall 为 0.6、Precision 为 0.8、MRR 为 0.8。无答案判断在这两种设置下为 1.0。
+
+这些值只对应这份小型教学标注和当前脚本，不是 RAG 产品的通用性能。观察 k 变小后返回更少、Precision 上升而 Recall 下降的原因，再读 [RAG 工程](../guides/rag-engineering.md)。高检索分数也不能代替对模型最终回答的事实核查。
+
+## 再运行一个有预算的控制循环
+
+~~~sh
+python3 controlled_loop.py "什么时候停止报名？" --max-calls 2
+python3 controlled_loop.py "什么时候停止报名？" --max-calls 1
+python3 controlled_loop.py "餐费 报销" --max-calls 2
+~~~
+
+第一条按固定策略先用原句检索，失败后改用预设关键词，第二次得到候选证据；第二条只允许一次调用，返回 budget_exhausted；第三条返回 no_result。可加 `--timeout 3` 指定单次工具执行超时，加 `--output output/loop.json` 保存到新的日志文件。
+
+这里真正实现了调用次数限制、指定工具执行、子进程超时与轨迹记录。策略是确定性的，程序没有调用 LLM，也没有生成最终答案，因此不是“完整智能 Agent”。对照 [Agent 工程](../guides/agent-engineering.md)，你可以指出未来替换成模型决策时哪些校验必须继续保留。
+
+## 继续升级时保留什么
 
 资料增多后，可增加段落切分和语义检索；频繁使用后，可接模型 API 自动回答；任务路径需要动态变化时，再考虑 Agent。每次增加能力都复跑已有用例。
 

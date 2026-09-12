@@ -6,7 +6,10 @@ from pathlib import Path
 
 
 def load_records(path):
-    records = json.loads(path.read_text(encoding="utf-8-sig"))
+    return validate_records(json.loads(path.read_text(encoding="utf-8-sig")))
+
+
+def validate_records(records):
     if not isinstance(records, list):
         raise ValueError("最外层必须是列表，例如 []。")
     seen = set()
@@ -90,4 +93,3 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
-

@@ -52,6 +52,12 @@ GitHub 仓库主要保存文件，GitHub Pages 则把选定内容作为静态网
 
 博客框架的构建发布可能使用 GitHub Actions，那是另一种流程；不要把单文件练习的设置直接套到框架博客。
 
+### 首次发布常见的路径问题
+
+项目站点通常在 `https://账号.github.io/仓库名/`；用户站点有不同的仓库命名与根路径约定，以 Pages 设置给出的地址为准。引用 `assets/logo.png` 与 `/assets/logo.png` 不同：后者从域名根开始，放在仓库子路径时可能找错位置。
+
+404 先检查发布分支、目录、index.html、大小写和构建结果；不要先删仓库重建。Actions 的绿色检查只证明对应任务完成，仍需打开实际页面检查资源和功能。记录发布版本或提交编号，下一次修改出问题才知道恢复哪一版。
+
 ## 发布后，数据发生了什么
 
 页面地址公开后，访问者可以加载页面。示例的待办仍保存在每个人自己的浏览器里，不会自动变成共享清单。localhost 下保存的记录也不会自动迁移到 GitHub Pages 地址，因为它们的站点来源不同。
@@ -61,6 +67,8 @@ GitHub 仓库主要保存文件，GitHub Pages 则把选定内容作为静态网
 ## 留一张交接卡
 
 交付时写清用途、打开方式、数据存放位置、如何导出、已知限制，以及出了问题找哪一份源文件。未来的你也会用到它。
+
+后续进入多人协作或自动构建，继续读 [GitHub 从零开始](../guides/github-from-zero.md)与 [测试与持续交付](../guides/testing-and-delivery.md)。先保存验收记录，再发布；发布之后复查真实地址，形成完整交付闭环。
 
 **动手做**：完成本地验收表，并写一段 100 字以内的使用说明。公开发布是可选练习，不是进入下一阶段的前提。
 
@@ -76,4 +84,3 @@ GitHub 仓库主要保存文件，GitHub Pages 则把选定内容作为静态网
 参考：[GitHub Pages：创建站点](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site)。
 
 [上一课](11-build-with-ai.md) · [下一课：NLP →](13-nlp.md)
-

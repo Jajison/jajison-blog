@@ -15,7 +15,7 @@ tags: [Shell, 自动化]
 
 每次检查资料，你都要打开文件夹、逐个数行。Shell 脚本可以把这类固定步骤保存下来。文件扩展名通常是 .sh，运行一次，就按顺序执行里面的命令。
 
-**适用环境**：macOS / Linux / 已配置的 WSL Ubuntu。Windows PowerShell 用户可以读懂这课后进入 Python，不必为了这个练习额外安装环境。
+**适用环境**：.sh 成品用于 macOS / Linux / 已配置的 WSL Ubuntu；Windows PowerShell 使用本课的对应练习，无需另外安装 Linux。
 
 ## 先运行成品
 
@@ -49,7 +49,24 @@ done
 
 完整脚本还检查目录是否存在，并把第一个命令行参数当作文件夹。暂时不必背参数写法，能改输入路径并验证就足够。
 
-## 把读懂代码交给 AI 辅助
+## Windows 上做相同的只读统计
+
+PowerShell 中逐行输入以下代码；大括号内的多行组成一个循环。它枚举 input 中的 .txt 普通文件，按 UTF-8 读取，再显示每个文件的行数：
+
+~~~powershell
+$files = @(Get-ChildItem -LiteralPath .\input -Filter *.txt -File -ErrorAction Stop)
+foreach ($file in $files) {
+    $lines = [System.IO.File]::ReadAllLines($file.FullName, [System.Text.Encoding]::UTF8)
+    "{0}: {1} 行" -f $file.Name, $lines.Length
+}
+if ($files.Count -eq 0) { "没有 .txt 文件" }
+~~~
+
+原始练习应显示 monday.txt 与 tuesday.txt 各两行。这里的 .NET ReadAllLines 数文本行，sh 的 wc -l 数换行符；对最后一行没有换行的文件，它们可能不同。先明确“行”的定义，再比较工具输出。本例基于 PowerShell/.NET 官方接口编写；是否在你的 Windows 版本实际通过，以你的运行记录为准。
+
+注意变量写法从 sh 的 `folder="input"` 变成 PowerShell 的 `$files = ...`，循环和条件也有独立语法。把 .sh 扩展名改成 .ps1 并不能转换程序。
+
+## 请 AI 解释代码，再改一个条件
 
 ~~~text
 请逐段解释 list_notes.sh：它读取哪些路径，是否写文件，
@@ -81,3 +98,5 @@ sh list_notes.sh missing-notes
 </details>
 
 [上一课](05-terminal-and-linux.md) · [下一课：一点 Python →](07-python.md)
+
+参考：[PowerShell 管道](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_pipelines)、[.NET File.ReadAllLines](https://learn.microsoft.com/en-us/dotnet/api/system.io.file.readalllines)。

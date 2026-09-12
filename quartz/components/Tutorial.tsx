@@ -2,105 +2,105 @@ import { QuartzComponent, QuartzComponentProps } from "./types"
 import { PageFrame } from "./frames/types"
 import { pathToRoot } from "../util/path"
 import type { QuartzPluginData } from "../plugins/vfile"
+import curriculum from "../../tutorial/curriculum.json"
+import {
+  ArrowUpRight,
+  ArrowRight,
+  BookOpen,
+  FlaskConical,
+  Code2,
+  Layers3,
+  Check,
+  Download,
+  GitBranch,
+  Monitor,
+  Braces,
+  Network,
+  Cpu,
+  Search,
+  Route,
+  ShieldCheck,
+} from "lucide-preact"
+import { LearningLabs } from "./LearningLabs"
+// @ts-ignore bundled as a client script by Quartz
+import learningScript from "./scripts/learning.inline"
 
-export const stages = [
-  {
-    title: "先用起来",
-    note: "一份清楚的任务，一份可核对的结果。",
-    scope: "日常办公",
-    range: "01—04",
-  },
-  {
-    title: "让电脑重复做事",
-    note: "认识终端，运行脚本，读懂报错。",
-    scope: "脚本入门",
-    range: "05—08",
-  },
-  {
-    title: "和 AI 一起开发",
-    note: "从一个小需求，到能打开的小工具。",
-    scope: "动手开发",
-    range: "09—12",
-  },
-  {
-    title: "理解模型，做好选择",
-    note: "NLP、Transformer、LLM、RAG，够用就好。",
-    scope: "按需进阶",
-    range: "13—16",
-  },
-  {
-    title: "让 AI 可靠地做事",
-    note: "工具、Agent、Harness，以及怎么验收。",
-    scope: "按需进阶",
-    range: "17—20",
-  },
-]
-
-const lessons = (files: QuartzPluginData[]) =>
-  files
-    .filter((file) => typeof file.frontmatter?.lesson === "number")
-    .sort((a, b) => Number(a.frontmatter!.lesson) - Number(b.frontmatter!.lesson))
-const lessonTitle = (file: QuartzPluginData) =>
-  String(file.frontmatter?.title ?? "").replace(/^\d+｜/, "")
-const href = (props: QuartzComponentProps, path = "") =>
-  `${pathToRoot(props.fileData.slug!)}/${path}`
+const tracks = curriculum.tracks
+const slugs = tracks.flatMap((track) => track.pages)
+const icons = [Monitor, Code2, GitBranch, Braces, Cpu, Search, Network, ShieldCheck]
+const title = (file?: QuartzPluginData) =>
+  String(file?.frontmatter?.title ?? "").replace(/^\d+｜/, "")
+const href = (props: QuartzComponentProps, slug = "") =>
+  pathToRoot(props.fileData.slug!) + "/" + slug
+const filesBySlug = (props: QuartzComponentProps) =>
+  new Map(props.allFiles.map((file) => [String(file.slug), file]))
+const prerequisiteSlug = (value: string) => (value.includes("/") ? value : "learn/" + value)
 
 export const TutorialBrand: QuartzComponent = (props) => (
   <a class="brand internal" href={href(props)} aria-label="Jajison，把 AI 用起来，返回首页">
     <span class="brand-mark" aria-hidden="true">
-      ai<span>↗</span>
+      <Layers3 size={22} />
     </span>
     <span class="brand-copy">
-      <span>JAJISON / LEARN BY DOING</span>
-      <strong>把 AI 用起来</strong>
+      <strong>
+        Jajison<span> / </span>把 AI 用起来
+      </strong>
+      <small>从零起步 · 理解原理 · 动手验证</small>
     </span>
   </a>
 )
+TutorialBrand.afterDOMLoaded = learningScript
 
 export const TutorialNav: QuartzComponent = (props) => (
   <nav class="top-nav" aria-label="主导航">
-    <a class="internal" href={href(props, "start")}>
-      从这里开始
-    </a>
-    <a class="internal" href={href(props, "#courses")}>
-      课程路线
-    </a>
-    <a class="internal" href={href(props, "#projects")}>
-      实战项目
-    </a>
-    <a class="internal" href={href(props, "glossary")}>
-      查词
-    </a>
+    {[
+      ["start", "从零开始"],
+      ["#courses", "知识库"],
+      ["labs", "原理实验室"],
+      ["#projects", "实战"],
+    ].map(([slug, label]) => (
+      <a
+        class="internal"
+        href={href(props, slug)}
+        aria-current={props.fileData.slug === slug ? "page" : undefined}
+      >
+        {label}
+      </a>
+    ))}
   </nav>
 )
 
 export const CourseNav: QuartzComponent = (props) => {
-  const all = lessons(props.allFiles)
-  const current = Number(props.fileData.frontmatter?.lesson ?? 0)
+  const files = filesBySlug(props)
+  const current = String(props.fileData.slug)
   return (
     <nav class="course-nav" aria-label="课程导航">
-      <a class="course-home internal" href={href(props, "start")}>
-        学习路线 <span>20 篇短课</span>
+      <a class="course-home internal" href={href(props, "#courses")}>
+        <BookOpen size={16} /> 全部学习路径 <span>{slugs.length} 篇</span>
       </a>
-      {stages.map((stage, index) => (
+      <div class="sidebar-progress enhanced-only">
+        <span data-progress-summary>尚未标记</span>
+        <progress data-progress-bar max={slugs.length} value={0} aria-label="已读文章数量" />
+      </div>
+      {tracks.map((track, index) => (
         <details
           class="course-group"
-          open={(current > index * 4 && current <= index * 4 + 4) || (current === 0 && index === 0)}
+          open={track.pages.includes(current) || (current === "start" && index === 0)}
         >
           <summary>
-            <span class="stage-number">0{index + 1}</span>
-            {stage.title}
+            <span class="stage-number">{String(index + 1).padStart(2, "0")}</span>
+            {track.title}
           </summary>
           <ol>
-            {all.slice(index * 4, index * 4 + 4).map((file) => (
-              <li>
+            {track.pages.map((slug) => (
+              <li data-page-slug={slug}>
                 <a
                   class="internal"
-                  aria-current={file.slug === props.fileData.slug ? "page" : undefined}
-                  href={href(props, file.slug)}
+                  href={href(props, slug)}
+                  aria-current={current === slug ? "page" : undefined}
                 >
-                  <span>{String(file.frontmatter!.lesson).padStart(2, "0")}</span>
-                  {lessonTitle(file)}
+                  <span class="nav-title">{title(files.get(slug)) || slug}</span>
+                  <span data-read-marker class="read-marker" />
                 </a>
               </li>
             ))}
@@ -108,14 +108,17 @@ export const CourseNav: QuartzComponent = (props) => {
         </details>
       ))}
       <div class="course-extras">
-        <a class="internal" href={href(props, "prompt-cards")}>
-          可直接用的任务卡 <span>↗</span>
+        <a class="internal" href={href(props, "labs")}>
+          <FlaskConical size={15} /> 原理实验室
+        </a>
+        <a class="internal" href={href(props, "glossary")}>
+          术语索引 <ArrowUpRight size={14} />
         </a>
         <a class="internal" href={href(props, "troubleshooting")}>
-          卡住了，看这里 <span>↗</span>
+          遇到问题，从这里排查 <ArrowUpRight size={14} />
         </a>
         <a href={href(props, "downloads/ai-workshop.zip")} download>
-          下载完整练习包 <span>↓</span>
+          <Download size={15} /> 下载完整练习包
         </a>
       </div>
     </nav>
@@ -123,23 +126,41 @@ export const CourseNav: QuartzComponent = (props) => {
 }
 
 export const CourseMeta: QuartzComponent = (props) => {
-  const number = Number(props.fileData.frontmatter?.lesson ?? 0)
+  const slug = String(props.fileData.slug)
+  const track = tracks.find((item) => item.pages.includes(slug))
   const duration = props.fileData.frontmatter?.duration
   return (
     <div class="course-meta">
       <a class="internal" href={href(props)}>
-        首页
+        知识库
       </a>
-      <span aria-hidden="true">/</span>
-      {number ? (
-        <>
-          <span>第 {String(number).padStart(2, "0")} 课 / 20</span>
-          <span class="meta-stage">{stages[Math.floor((number - 1) / 4)]?.scope}</span>
-        </>
-      ) : (
-        <span>学习资源</span>
-      )}
+      <span>/</span>
+      <span>{track?.title ?? (slug === "labs" ? "原理实验室" : "学习资源")}</span>
       {typeof duration === "number" && <span class="duration">阅读与练习约 {duration} 分钟</span>}
+    </div>
+  )
+}
+
+function ProgressTools() {
+  return (
+    <div class="progress-tools enhanced-only">
+      <span class="progress-status">
+        <Check size={15} />
+        <span data-progress-summary>尚未标记</span>
+      </span>
+      <button type="button" data-progress-export>
+        导出进度
+      </button>
+      <label class="file-control">
+        恢复进度
+        <input
+          type="file"
+          accept=".json,application/json"
+          data-progress-import
+          aria-label="从 JSON 文件恢复阅读进度"
+        />
+      </label>
+      <small>仅保存在此浏览器</small>
     </div>
   )
 }
@@ -147,206 +168,356 @@ export const CourseMeta: QuartzComponent = (props) => {
 export const TutorialFooter: QuartzComponent = (props) => (
   <footer class="tutorial-footer">
     <div>
-      <strong>Jajison · 把 AI 用起来</strong>
-      <p>少一点术语，多一点做成的事。</p>
+      <strong>把 AI 用起来，也把它弄明白。</strong>
+      <p>Jajison · 持续整理的 AI 学习与实践笔记</p>
     </div>
     <nav aria-label="页脚导航">
       <a class="internal" href={href(props, "about")}>
-        关于教程
+        关于与来源
       </a>
-      <a href="https://github.com/Jajison/jajison-blog">GitHub ↗</a>
+      <a href="https://github.com/Jajison/jajison-blog">
+        GitHub <ArrowUpRight size={13} />
+      </a>
       <a href={href(props, "index.xml")}>RSS</a>
     </nav>
   </footer>
 )
 
 export const TutorialHome: QuartzComponent = (props) => {
-  const all = lessons(props.allFiles)
+  const files = filesBySlug(props)
+  const questions = slugs.reduce(
+    (sum, slug) => sum + (Number(files.get(slug)?.frontmatter?.selfCheckCount) || 0),
+    0,
+  )
   return (
     <div class="tutorial-home">
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero-copy">
           <p class="eyebrow">
-            <span class="status-dot" />
-            给零编程基础的你
+            <span class="status-dot" /> JAJISON / LEARNING NOTES
           </p>
           <h1 id="hero-title">
-            不懂代码，
+            从认识电脑，
             <br />
-            也能把 <em>AI 用起来。</em>
+            到理解 <em>AI 的每一步。</em>
           </h1>
           <p class="hero-description">
-            从整理一份周报，到做出自己的小工具。
+            Windows 和 Mac 怎么用，GitHub 从哪开始，
             <br class="desktop-break" />
-            先完成眼前的工作，再学需要的那一点技术。
+            大模型如何工作，以及怎样亲手做出可靠的工具。
           </p>
           <div class="hero-actions">
-            <a class="button primary internal" href={href(props, "learn/01-first-result")}>
-              从第一课开始 <span>→</span>
+            <a class="button primary internal" href={href(props, "start")}>
+              找到我的起点 <ArrowRight size={16} />
             </a>
-            <a class="button secondary internal" href={href(props, "start")}>
-              选一条适合我的路线
+            <a class="button secondary internal" href={href(props, "labs")}>
+              <FlaskConical size={17} /> 打开原理实验室
             </a>
           </div>
-          <div class="hero-stats">
-            <span>
-              <strong>20</strong> 篇短教程
-            </span>
-            <span>
-              <strong>3</strong> 个实战项目
-            </span>
-            <span>
-              <strong>0</strong> 编程基础也能开始
-            </span>
-          </div>
+          <a
+            class="resume-link internal enhanced-only"
+            href={href(props, "start")}
+            data-resume-reading
+            hidden
+          />
         </div>
-        <div class="hero-demo" aria-label="第一课的输入和输出示例">
-          <div class="demo-heading">
-            <span class="demo-dot" />
-            第一课，你就能做成这件事<span class="demo-index">01 / 20</span>
+        <div class="hero-map" aria-label="从计算机基础到模型与工程的学习地图">
+          <div class="map-heading">
+            <span>
+              <Route size={16} /> 一张能走通的学习地图
+            </span>
+            <span>LEARN → BUILD</span>
           </div>
-          <div class="demo-input">
-            <span class="micro-label">交代任务</span>
-            <p>
-              “把会议记录整理成行动清单。
-              <br />
-              保留负责人和日期，缺的信息写未确定。”
-            </p>
-          </div>
-          <div class="demo-connector">
-            <span>↓</span> 给资料 · 定格式 · 查结果
-          </div>
-          <div class="demo-output">
-            <div class="output-heading">
-              <span>行动清单</span>
-              <span>可回到原文核对</span>
+          <a class="map-step internal" href={href(props, "guides/computer-and-os")}>
+            <span class="map-number">01</span>
+            <div>
+              <strong>先把基础接起来</strong>
+              <span>电脑 · 文件 · 终端 · GitHub</span>
             </div>
-            <div class="output-row">
-              <span class="task-state">待办</span>
-              <span>
-                活动页面初稿<small>小林 · 9 月 12 日前</small>
-              </span>
-              <span class="source-label">[M2]</span>
+            <Monitor size={21} />
+          </a>
+          <span class="map-connector" aria-hidden="true" />
+          <a class="map-step internal" href={href(props, "learn/14-transformer")}>
+            <span class="map-number">02</span>
+            <div>
+              <strong>看懂模型怎样计算</strong>
+              <span>数学 · Transformer · 训练与推理</span>
             </div>
-            <div class="output-row">
-              <span class="task-state">待办</span>
-              <span>
-                确认场地<small>小周 · 时间未确定</small>
-              </span>
-              <span class="source-label">[M3]</span>
+            <Cpu size={21} />
+          </a>
+          <span class="map-connector" aria-hidden="true" />
+          <a class="map-step internal" href={href(props, "guides/rag-engineering")}>
+            <span class="map-number">03</span>
+            <div>
+              <strong>做出来，再验证</strong>
+              <span>RAG · Agent · 测试与交付</span>
             </div>
-            <div class="demo-check">✓ 缺失的日期，不凭空补出来。</div>
-          </div>
-          <p class="demo-caption">教程中的虚构示例 · 你来交代，AI 来协助，你来验收。</p>
+            <ShieldCheck size={21} />
+          </a>
+          <p>每个概念都有来路，每次练习都有验收标准。</p>
         </div>
       </section>
-      <section class="home-section projects-section" id="projects" aria-labelledby="projects-title">
-        <div class="section-heading">
+      <div class="knowledge-stats" aria-label="知识库内容">
+        <span>
+          <strong>{slugs.length}</strong> 篇系统文章
+        </span>
+        <span>
+          <strong>{tracks.length}</strong> 条学习路径
+        </span>
+        <span>
+          <strong>3</strong> 个交互实验
+        </span>
+        <span>
+          <strong>{questions}</strong> 道文内自测
+        </span>
+      </div>
+      <section class="entry-section" aria-label="按经验选择起点">
+        <a class="entry-link internal" href={href(props, "guides/computer-and-os")}>
+          <Monitor size={22} />
           <div>
-            <p class="eyebrow">START WITH A REAL TASK</p>
-            <h2 id="projects-title">你想先做成什么？</h2>
+            <h2>第一次接触这些？</h2>
+            <p>从文件、操作系统和第一条命令开始。</p>
           </div>
-          <p>选一个眼下用得上的，直接动手。</p>
-        </div>
-        <div class="project-grid">
-          {[
-            {
-              num: "01",
-              label: "不用写代码",
-              title: "把散乱记录，变成清楚周报",
-              desc: "先整理事实，再生成文字。每个日期、状态和数字都有依据。",
-              href: "projects/01-weekly-report",
-              foot: "带走一份可核对的周报",
-            },
-            {
-              num: "02",
-              label: "少量 Python",
-              title: "让重复整理，交给小脚本",
-              desc: "把工作记录自动汇总。先预览，再保存，输入变了也能重复用。",
-              href: "projects/02-work-tool",
-              foot: "带走一个自己的工作工具",
-            },
-            {
-              num: "03",
-              label: "按需进阶",
-              title: "让 AI 查资料，再给你答案",
-              desc: "检索原文、标明出处。资料没有写的，能明确说不知道。",
-              href: "projects/03-document-assistant",
-              foot: "带走一条带出处的问答流程",
-            },
-          ].map((project) => (
-            <a class="project-card internal" href={href(props, project.href)}>
-              <div class="project-top">
-                <span class="project-number">{project.num}</span>
-                <span class="chip">{project.label}</span>
-              </div>
-              <h3>{project.title}</h3>
-              <p>{project.desc}</p>
-              <div class="project-foot">
-                <span>{project.foot}</span>
-                <span>↗</span>
-              </div>
-            </a>
-          ))}
-        </div>
+          <ArrowUpRight size={20} />
+        </a>
+        <a class="entry-link internal" href={href(props, "guides/math-for-ai")}>
+          <Braces size={22} />
+          <div>
+            <h2>想把原理真正弄懂？</h2>
+            <p>沿着向量、注意力、训练与推理深入。</p>
+          </div>
+          <ArrowUpRight size={20} />
+        </a>
       </section>
       <section class="home-section" id="courses" aria-labelledby="courses-title">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">THE MINIMUM YOU NEED</p>
-            <h2 id="courses-title">五个阶段，只学够用的部分。</h2>
+            <p class="eyebrow">THE KNOWLEDGE MAP</p>
+            <h2 id="courses-title">知识库 · 选一条路径，逐步深入</h2>
           </div>
           <a class="text-link internal" href={href(props, "start")}>
-            查看阅读建议 →
+            阅读路线说明 <ArrowRight size={16} />
           </a>
         </div>
         <p class="section-intro">
-          前 3 课就能用于日常工作。脚本、开发和模型原理，按你需要的顺序继续。
+          同一知识点，从直觉解释走到公式、代码和失败案例。可以顺序学习，也可以从正在遇到的问题进入。
         </p>
+        <div class="course-toolbar enhanced-only">
+          <label class="filter-search">
+            <Search size={17} />
+            <input
+              id="course-filter"
+              type="search"
+              placeholder="筛选文章：Windows、GitHub、注意力…"
+              aria-label="筛选课程文章"
+            />
+          </label>
+          <select id="track-filter" aria-label="筛选学习路径">
+            <option value="">全部路径</option>
+            {tracks.map((track) => (
+              <option value={track.id}>{track.title}</option>
+            ))}
+          </select>
+          <label class="check-control">
+            <input id="unread-filter" type="checkbox" />
+            只看未读
+          </label>
+          <span data-filter-count aria-live="polite">
+            显示 {slugs.length} / {slugs.length} 篇
+          </span>
+        </div>
+        <ProgressTools />
+        <p class="progress-notice" data-progress-notice role="status" />
         <div class="curriculum">
-          {stages.map((stage, index) => (
-            <section class="stage-row" aria-labelledby={`stage-${index}`}>
-              <div class="stage-badge">0{index + 1}</div>
-              <div class="stage-description">
-                <span class="micro-label">
-                  {stage.scope} · {stage.range}
-                </span>
-                <h3 id={`stage-${index}`}>{stage.title}</h3>
-                <p>{stage.note}</p>
-              </div>
-              <ol class="stage-lessons">
-                {all.slice(index * 4, index * 4 + 4).map((file) => (
-                  <li>
-                    <a class="internal" href={href(props, file.slug)}>
-                      <span>{String(file.frontmatter!.lesson).padStart(2, "0")}</span>
-                      {lessonTitle(file)}
-                      <span aria-hidden="true">↗</span>
-                    </a>
-                  </li>
-                ))}
-              </ol>
-            </section>
+          {tracks.map((track, index) => {
+            const Icon = icons[index]
+            return (
+              <section
+                class="track-section"
+                id={"track-" + track.id}
+                data-track-entry={track.id}
+                aria-labelledby={"track-title-" + track.id}
+              >
+                <div class="track-intro">
+                  <span class="track-icon">
+                    <Icon size={21} />
+                  </span>
+                  <div>
+                    <p class="micro-label">
+                      {"0" + (index + 1)} / {track.level} · {track.pages.length} 篇
+                    </p>
+                    <h3 id={"track-title-" + track.id}>{track.title}</h3>
+                    <p>{track.description}</p>
+                  </div>
+                </div>
+                <ol class="track-articles">
+                  {track.pages.map((slug, pageIndex) => {
+                    const file = files.get(slug)
+                    const description = String(file?.frontmatter?.description ?? "")
+                    return (
+                      <li
+                        data-course-entry={slug}
+                        data-page-slug={slug}
+                        data-track={track.id}
+                        data-search={[
+                          title(file),
+                          description,
+                          track.title,
+                          ...(file?.frontmatter?.tags ?? []),
+                        ].join(" ")}
+                      >
+                        <a class="internal course-link" href={href(props, slug)}>
+                          <span class="article-index">
+                            {String(pageIndex + 1).padStart(2, "0")}
+                          </span>
+                          <span class="article-info">
+                            <strong>{title(file) || slug}</strong>
+                            <span>{description}</span>
+                            <small>
+                              <span data-read-marker class="read-marker" />
+                              {Number(file?.frontmatter?.duration) || "—"} 分钟 ·{" "}
+                              {slug.startsWith("guides/") ? "专题指南" : "核心课程"}
+                            </small>
+                          </span>
+                          <ArrowUpRight class="article-arrow" size={17} />
+                        </a>
+                      </li>
+                    )
+                  })}
+                </ol>
+              </section>
+            )
+          })}
+        </div>
+        <p class="empty-results" data-filter-empty hidden>
+          没有匹配文章。试试更短的关键词，或切回“全部路径”。
+        </p>
+      </section>
+      <section class="home-section" id="projects" aria-labelledby="projects-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">PUT IT INTO PRACTICE</p>
+            <h2 id="projects-title">带着一个结果离开</h2>
+          </div>
+          <a class="text-link" href={href(props, "downloads/ai-workshop.zip")} download>
+            <Download size={16} /> 下载完整练习包
+          </a>
+        </div>
+        <div class="project-grid">
+          {[
+            [
+              "01",
+              "projects/01-weekly-report",
+              "把工作记录变成可核对的周报",
+              "整理事实、标记来源，再让 AI 起草。用原始记录逐项验收。",
+              "浏览器 + AI 对话工具",
+            ],
+            [
+              "02",
+              "projects/02-work-tool",
+              "从脚本到自己的工作工具",
+              "运行 Python、查询 SQLite、调用本地 HTTP 接口，把输入真正变成输出。",
+              "Python 标准库 · 本地运行",
+            ],
+            [
+              "03",
+              "projects/03-document-assistant",
+              "搭建有证据的资料问答流程",
+              "亲手检索、测量召回、观察预算与超时，再核对 AI 回答。",
+              "检索评估 · 受控执行",
+            ],
+          ].map(([num, slug, heading, description, label]) => (
+            <a class="project-card internal" href={href(props, slug)}>
+              <span class="project-number">
+                {num} <ArrowUpRight size={18} />
+              </span>
+              <h3>{heading}</h3>
+              <p>{description}</p>
+              <span class="project-foot">{label}</span>
+            </a>
           ))}
         </div>
       </section>
-      <section class="resource-strip" aria-label="学习辅助资源">
+      <section class="resource-strip" aria-label="辅助资源">
         <div>
-          <p class="eyebrow">KEEP THESE CLOSE</p>
-          <h2>遇到问题，有地方查。</h2>
+          <h2>不用一次记住所有东西。</h2>
+          <p>查一个词、复制一份任务卡，或者从错误现象开始排查。</p>
         </div>
-        <a class="internal" href={href(props, "glossary")}>
-          <strong>术语白话表 ↗</strong>
-          <span>遇到再查，不用背。</span>
-        </a>
-        <a class="internal" href={href(props, "prompt-cards")}>
-          <strong>可复制的任务卡 ↗</strong>
-          <span>交代任务有个起点。</span>
-        </a>
-        <a class="internal" href={href(props, "troubleshooting")}>
-          <strong>排错入口 ↗</strong>
-          <span>把问题缩小一步。</span>
-        </a>
+        {[
+          ["glossary", "术语白话索引"],
+          ["prompt-cards", "任务与验收卡"],
+          ["troubleshooting", "排错手册"],
+        ].map(([slug, label]) => (
+          <a class="internal" href={href(props, slug)}>
+            {label}
+            <ArrowUpRight size={16} />
+          </a>
+        ))}
       </section>
+    </div>
+  )
+}
+
+function ReadingContext(props: QuartzComponentProps) {
+  const files = filesBySlug(props)
+  const prerequisites = props.fileData.frontmatter?.prerequisites
+  const outcome = props.fileData.frontmatter?.outcome
+  if (!outcome && !Array.isArray(prerequisites)) return null
+  return (
+    <details class="reading-context">
+      <summary>阅读准备与本篇目标</summary>
+      {outcome && (
+        <p>
+          <strong>读完能做什么：</strong>
+          {String(outcome)}
+        </p>
+      )}
+      {Array.isArray(prerequisites) && prerequisites.length > 0 ? (
+        <p class="prerequisite-links">
+          <strong>先修知识：</strong>
+          {prerequisites.map((value) => {
+            const slug = prerequisiteSlug(String(value))
+            return (
+              <a class="internal" href={href(props, slug)}>
+                {title(files.get(slug)) || String(value)}
+              </a>
+            )
+          })}
+        </p>
+      ) : (
+        <p>本篇可直接开始，不要求编程经验。</p>
+      )}
+    </details>
+  )
+}
+
+function ReadingNext(props: QuartzComponentProps) {
+  const slug = String(props.fileData.slug)
+  const index = slugs.indexOf(slug)
+  const files = filesBySlug(props)
+  if (index < 0) return null
+  return (
+    <div class="reading-next">
+      <div class="completion-row enhanced-only">
+        <span>完成练习后，再给自己一个标记。</span>
+        <button data-mark-read type="button" aria-pressed="false">
+          标记为已读
+        </button>
+      </div>
+      <nav aria-label="按学习路径继续阅读">
+        {[index - 1, index + 1].map((next, i) =>
+          next >= 0 && next < slugs.length ? (
+            <a class="internal" href={href(props, slugs[next])}>
+              <small>{i === 0 ? "← 路线上一篇" : "路线下一篇 →"}</small>
+              <strong>{title(files.get(slugs[next]))}</strong>
+            </a>
+          ) : (
+            <span />
+          ),
+        )}
+      </nav>
+      <ProgressTools />
+      <p data-progress-notice class="progress-notice" role="status" />
     </div>
   )
 }
@@ -363,20 +534,36 @@ export const TutorialFrame: PageFrame = {
     right,
     footer,
   }) {
-    const isHome = props.fileData.slug === "index"
+    const slug = String(props.fileData.slug)
+    const isHome = slug === "index"
+    const isLabs = slug === "labs"
+    const files = filesBySlug(props)
     const folderTitle =
       (
         {
-          "learn/index": "全部课程",
-          "projects/index": "三个实战项目",
+          "learn/index": "核心课程",
+          "guides/index": "专题指南",
+          "projects/index": "实战项目",
           "tags/index": "按主题阅读",
         } as Record<string, string>
-      )[props.fileData.slug ?? ""] ??
-      (props.fileData.slug?.startsWith("tags/")
-        ? String(props.fileData.frontmatter?.title ?? "相关课程")
+      )[slug] ??
+      (slug.startsWith("tags/")
+        ? String(props.fileData.frontmatter?.title ?? "相关内容")
         : undefined)
     return (
       <>
+        <div
+          id="learning-data"
+          hidden
+          data-current={slug}
+          data-catalog={JSON.stringify(
+            slugs.map((page) => ({
+              slug: page,
+              title: title(files.get(page)),
+              href: href(props, page),
+            })),
+          )}
+        />
         <a class="skip-link" href="#main-content">
           跳到正文
         </a>
@@ -390,7 +577,7 @@ export const TutorialFrame: PageFrame = {
             <TutorialHome {...props} />
           </main>
         ) : (
-          <div class="reading-layout">
+          <div class={"reading-layout" + (isLabs ? " labs-layout" : "")}>
             <aside class="course-sidebar">
               <div class="desktop-courses">
                 {left.map((Component) => (
@@ -398,7 +585,9 @@ export const TutorialFrame: PageFrame = {
                 ))}
               </div>
               <details class="mobile-courses">
-                <summary>展开课程导航</summary>
+                <summary>
+                  <BookOpen size={16} /> 学习路径与阅读进度
+                </summary>
                 {left.map((Component) => (
                   <Component {...props} />
                 ))}
@@ -410,20 +599,40 @@ export const TutorialFrame: PageFrame = {
                   <Component {...props} />
                 ))}
               </div>
+              <ReadingContext {...props} />
+              {!isLabs && Array.isArray(props.fileData.toc) && props.fileData.toc.length > 0 && (
+                <details class="mobile-toc">
+                  <summary>本页目录</summary>
+                  <nav aria-label="展开后的本页目录">
+                    {props.fileData.toc.map((entry: { slug: string; text: string }) => (
+                      <a href={"#" + entry.slug}>{entry.text}</a>
+                    ))}
+                  </nav>
+                </details>
+              )}
               <div class="popover-hint">
                 {folderTitle && <h1 class="resource-title">{folderTitle}</h1>}
                 <Content {...props} />
               </div>
+              {isLabs && <LearningLabs />}
               <div class="page-footer">
                 {afterBody.map((Component) => (
                   <Component {...props} />
                 ))}
               </div>
+              <ReadingNext {...props} />
             </main>
             <aside class="reading-toc" aria-label="本页目录">
-              {right.map((Component) => (
-                <Component {...props} />
-              ))}
+              {isLabs ? (
+                <nav class="lab-toc">
+                  <strong>本页实验</strong>
+                  <a href="#softmax">温度与概率</a>
+                  <a href="#attention">注意力与掩码</a>
+                  <a href="#kv-cache">KV Cache 容量</a>
+                </nav>
+              ) : (
+                right.map((Component) => <Component {...props} />)
+              )}
             </aside>
           </div>
         )}
