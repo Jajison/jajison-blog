@@ -1,0 +1,123 @@
+# yaml-language-server: $schema=./quartz/plugins/quartz-plugins.schema.json
+configuration:
+  pageTitle: Jajison · 把 AI 用起来
+  pageTitleSuffix: " · Jajison"
+  enableSPA: true
+  enablePopovers: false
+  analytics: null
+  locale: zh-CN
+  baseUrl: jajison.github.io/jajison-blog
+  ignorePatterns:
+    - private
+    - templates
+    - .obsidian
+    - downloads/workshop/**
+  theme:
+    fontOrigin: local
+    cdnCaching: false
+    typography:
+      header: PingFang SC
+      body: PingFang SC
+      code: SFMono-Regular
+    colors:
+      lightMode:
+        light: "#f7f8fc"
+        lightgray: "#dfe5ef"
+        gray: "#64728a"
+        darkgray: "#344057"
+        dark: "#192338"
+        secondary: "#315bd6"
+        tertiary: "#137a65"
+        highlight: "#315bd60c"
+        textHighlight: "#dbe5ff"
+      darkMode:
+        light: "#11151d"
+        lightgray: "#2b3647"
+        gray: "#a2aec3"
+        darkgray: "#c4cede"
+        dark: "#edf2fa"
+        secondary: "#8baeff"
+        tertiary: "#77d8bf"
+        highlight: "#8baeff12"
+        textHighlight: "#2b416b"
+plugins:
+  - source: "@quartz-community/note-properties"
+    enabled: true
+    options:
+      hidePropertiesView: true
+    order: 5
+  - source: "@quartz-community/created-modified-date"
+    enabled: true
+    options:
+      defaultDateType: modified
+      priority:
+        - frontmatter
+        - git
+        - filesystem
+    order: 10
+  - source: "@quartz-community/syntax-highlighting"
+    enabled: true
+    options:
+      theme:
+        light: github-light
+        dark: github-dark
+      keepBackground: false
+    order: 20
+  - source: "@quartz-community/obsidian-flavored-markdown"
+    enabled: true
+    options:
+      enableInHtmlEmbed: false
+      enableCheckbox: true
+    order: 30
+  - source: "@quartz-community/github-flavored-markdown"
+    enabled: true
+    order: 40
+  - source: "@quartz-community/table-of-contents"
+    enabled: true
+    order: 50
+    layout:
+      position: right
+      priority: 30
+  - source: "@quartz-community/crawl-links"
+    enabled: true
+    options:
+      markdownLinkResolution: relative
+    order: 60
+  - source: "@quartz-community/description"
+    enabled: true
+    order: 70
+  - source: "@quartz-community/remove-draft"
+    enabled: true
+  - source: "@quartz-community/content-index"
+    enabled: true
+    options:
+      enableSiteMap: true
+      enableRSS: true
+  - source: "@quartz-community/content-page"
+    enabled: true
+  - source: "@quartz-community/folder-page"
+    enabled: true
+  - source: "@quartz-community/tag-page"
+    enabled: true
+  - source: "@quartz-community/search"
+    enabled: true
+    layout:
+      position: header
+      priority: 20
+    options:
+      enablePreview: false
+  - source: "@quartz-community/darkmode"
+    enabled: true
+    layout:
+      position: header
+      priority: 30
+layout:
+  byPageType:
+    "404":
+      template: tutorial
+    content:
+      template: tutorial
+    folder:
+      template: tutorial
+    tag:
+      template: tutorial

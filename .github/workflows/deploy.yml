@@ -1,0 +1,55 @@
+name: Publish blog to GitHub Pages
+
+on:
+  push:
+    branches: [v5]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - uses: actions/configure-pages@v5
+      - name: Install dependencies
+        run: npm ci
+      - name: Check tutorial and exercises
+        run: |
+          python3 tutorial/tools/check_content.py
+          python3 tutorial/tools/check_examples.py
+      - name: Build the blog
+        run: npm run build
+      - name: Verify types, pages, links and downloads
+        run: npm run check:blog
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy the blog
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,29 +1,45 @@
-# 从内容包到 GitHub 博客
+# 博客维护与发布
 
-目标仓库：https://github.com/Jajison/jajison-blog 。本轮只准备本地文档，没有推送或部署。2026-09-11 通过公开 API 读取目录时收到 403，未据此判断仓库是空仓库或某一框架。
+工作目录：`/Users/jajison/Documents/personal/jajison-blog-github`。
 
-## 接入顺序
+仓库：https://github.com/Jajison/jajison-blog 。主分支：`v5`。网页地址：https://jajison.github.io/jajison-blog/ 。使用 Quartz 5 与 GitHub Pages，发布来源为 GitHub Actions。
 
-1. 单独克隆远程仓库，检查实际默认分支、README、构建命令与已有工作流。
-2. 保留现有框架。若采用 Quartz，将本包 content 内的文件映射到其内容目录；若采用 Astro，为同一 Markdown 元数据添加内容集合与页面渲染。
-3. 设置站点地址为 https://jajison.github.io/jajison-blog/ ，处理 /jajison-blog/ 子路径下的内部链接、图片与下载。
-4. Markdown 渲染器把指向 .md 的相对链接转换成对应页面；SVG 保留为静态资源，downloads 作为原样下载资产。文章标题由模板或正文其中一方渲染，避免双 H1。
-5. 只打包对外内容和站点必需代码。editorial 与 tools 是维护资料，不自动生成文章列表。
-6. 本地构建，验证首页、两篇文章、图片、练习 ZIP、下一篇链接和移动端排版。
-7. 按已选择的框架生成 GitHub Actions；触发分支取仓库实际值，不照搬某个模板的 v5 或 main。
-8. 在仓库 Settings → Pages 选择匹配的部署来源；公开发布后再核对真实网址、下载与站内链接。
+## 日常更新
 
-## 元数据
+直接修改本仓库的 `tutorial/content/`。文章标题、描述、课程编号、阶段、预计时间与前置要求保留在 Markdown frontmatter 中。首页课程列表和侧栏从这些信息生成，排序依据 lesson。
 
-文章使用 title、description、tags；课程额外使用 lesson、stage、duration、prerequisites、outcome。duration 是阅读加初次练习的估计分钟数。现有正文没有要求框架自动实现这些字段；模板应读取它们或有选择地展示。
+```sh
+cd "/Users/jajison/Documents/personal/jajison-blog-github"
+python3 tutorial/tools/check_content.py
+npm run build
+npm run check:blog
+git add tutorial
+git diff --cached --stat
+git commit -m "更新教程内容"
+git push
+```
 
-代码块使用 Markdown 的三波浪号围栏，标准 CommonMark 渲染器可识别。自测答案使用 details/summary，站点需允许这两个安全 HTML 元素。
+更新练习源码时，先运行 `python3 tutorial/tools/package_workshop.py` 重新生成压缩包，再检查。不要把自己的运行输出放进练习包。
 
-## 发布前必须验证的内容
+## 发布机制
 
-下载包由 tools/package_workshop.py 生成到 content/downloads/ai-workshop.zip，输出目录里的个人运行结果不进入包。部署后检查 .py、.sh 和 .json 下载类型；若平台把它们当页面解析，统一引导下载 ZIP。
+`.github/workflows/deploy.yml` 在 `v5` 收到推送时运行。它安装锁定依赖，检查教程和示例，使用 `tutorial/content` 构建页面，再核对输出中的标题、链接、锚点、下载和搜索索引。全部通过后部署到 GitHub Pages。
 
-仅复制本博客目录，不能把上级 ToFindWork 仓库直接作为博客的发布根目录。不要对尚未检查的远程仓库执行覆盖式初始化或强制推送。
+网站不从仓库根目录生成，因此 `editorial`、工具脚本和 Quartz 自带文档不会成为公开网页。它们作为源代码仍可在公开的 GitHub 仓库中阅读。
 
-官方参考：[GitHub Pages 文档](https://docs.github.com/en/pages)、[Quartz 文档](https://quartz.jzhao.xyz/)。实际框架版本确定后，再填写与之匹配的构建配置。
+练习包源码被排除在文章解析之外，再由 `TutorialDownloads` 按原路径复制到网站输出。这样 JSON、Python、Shell 和素材 Markdown 可以作为原文件取得，而不会混进文章搜索。`ai-workshop.zip` 是读者的主要入口。
 
+## 页面与样式
+
+- `quartz.config.yaml`：中文界面、本地字体、相对链接、网站地址和必要插件。
+- `quartz/components/Tutorial.tsx`：首页、头部导航、课程侧栏和文章框架。
+- `quartz/styles/custom.scss`：正文宽度、中文行距、表格与代码滚动、移动端布局和两种主题。
+- `quartz/plugins/tutorial.ts`：学习目标与验收提示样式、图示放大入口、原始练习文件导出。
+
+使用 `npm run dev` 快速预览；使用 `npm run build` 与 `python3 scripts/preview_blog.py` 检查实际 `/jajison-blog/` 路径。预览按 Ctrl+C 停止。
+
+## 发布失败时
+
+打开仓库 Actions → Publish blog to GitHub Pages，查看失败的步骤。构建失败先在本地重复同一命令；部署失败查看 Pages 设置是否仍为 GitHub Actions，以及 `github-pages` 环境是否允许 `v5` 部署。不要用强制推送或删除环境来绕过不明失败。
+
+官方参考：[GitHub Pages](https://docs.github.com/en/pages)、[Quartz](https://quartz.jzhao.xyz/)。
