@@ -206,8 +206,8 @@ for path in svg_files:
                 fail(path, f"SVG 缺少 {tag}")
     except ElementTree.ParseError as error:
         fail(path, f"SVG 无法解析：{error}")
-if len(svg_files) != 7:
-    errors.append("content/assets: 应有 7 张解释图；先运行 tools/make_diagrams.py")
+if len(svg_files) != 9:
+    errors.append("content/assets: 应有 7 张原理图和 2 张使用入门图")
 
 archive_path = ROOT / "content/downloads/ai-workshop.zip"
 if not archive_path.is_file():
@@ -248,5 +248,5 @@ else:
 if errors:
     print("\n".join(errors), file=sys.stderr)
     sys.exit(1)
-print(f"PASS：{len(markdown)} 份 Markdown，{len(tracks)} 路线 / {len(articles)} 篇文章 / 20 核心课，{link_count} 个相对链接，7 张 SVG，实验室、先修无环、练习 ZIP 全集合与源码一致。")
+print(f"PASS：{len(markdown)} 份 Markdown，{len(tracks)} 路线 / {len(articles)} 篇文章 / 20 核心课，{link_count} 个相对链接，{len(svg_files)} 张 SVG，实验室、先修无环、练习 ZIP 全集合与源码一致。")
 print("范围：离线结构检查；不验证外部网址、网站路由或 AI 回答质量。")

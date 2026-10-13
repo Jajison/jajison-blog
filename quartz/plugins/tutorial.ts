@@ -132,12 +132,25 @@ export const TutorialReading: QuartzTransformerPlugin = () => ({
     return [
       () => (tree: Root, file: VFile) => {
         annotateTutorialMath(tree, file)
+        const heading = tree.children.findIndex(
+          (node) => node.type === "element" && node.tagName === "h1",
+        )
+        const description = file.data.frontmatter?.description
+        if (heading >= 0 && typeof description === "string" && description.trim()) {
+          tree.children.splice(heading + 1, 0, {
+            type: "element",
+            tagName: "p",
+            properties: { className: ["article-deck"] },
+            children: [{ type: "text", value: description }],
+          })
+        }
         let selfCheckCount = 0
         visit(tree, "element", (node: Element) => {
           if (node.tagName === "summary" && toString(node).includes("自测")) selfCheckCount++
           if (node.tagName !== "p") return
           const text = toString(node)
-          if (text.startsWith("这一课做成什么")) node.properties.className = ["learning-outcome"]
+          if (text.startsWith("这一课做成什么") || text.startsWith("这一篇做成什么"))
+            node.properties.className = ["learning-outcome"]
           if (text.startsWith("完成标准")) node.properties.className = ["completion-check"]
           if (
             node.children.length === 1 &&

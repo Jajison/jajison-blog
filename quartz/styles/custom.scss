@@ -6,18 +6,22 @@
     "Microsoft YaHei", sans-serif;
   --headerFont: var(--bodyFont);
   --codeFont: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-  --surface: #fff;
-  --surface-soft: #f0f2f8;
-  --accent-soft: #e9edff;
-  --rule: #e2e6ee;
-  --accent-ink: #3854bd;
+  --surface: #fffefa;
+  --surface-soft: #f0efe8;
+  --accent-soft: #e6eee6;
+  --rule: #e1e2d9;
+  --accent-ink: #356653;
+  --warm: #ac7042;
+  --warm-soft: #f3e9d8;
 }
 :root[saved-theme="dark"] {
-  --surface: #181c25;
-  --surface-soft: #1e2430;
-  --accent-soft: #242e49;
-  --rule: #2b3241;
-  --accent-ink: #a7b8ff;
+  --surface: #20251f;
+  --surface-soft: #262c25;
+  --accent-soft: #283e31;
+  --rule: #394038;
+  --accent-ink: #a3c8aa;
+  --warm: #e4b98a;
+  --warm-soft: #3b3226;
 }
 * {
   box-sizing: border-box;
@@ -2088,6 +2092,701 @@ progress::-webkit-progress-value {
   }
   .cache-result output {
     font-size: 24px;
+  }
+}
+/* The homepage is an invitation to read; the article remains the main surface. */
+.site-header {
+  max-width: 1320px;
+  padding-block: 27px;
+  border-bottom: 1px solid var(--rule);
+}
+.brand-mark {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+.brand-copy small {
+  font-size: 11px;
+  letter-spacing: 0.4px;
+}
+.home-main {
+  max-width: 1200px;
+}
+.hero {
+  grid-template-columns: 1.12fr 1fr;
+  gap: 70px;
+  padding: 84px 0 80px;
+}
+.hero h1 {
+  font-size: clamp(40px, 4.6vw, 60px);
+  line-height: 1.35;
+  letter-spacing: -2px;
+  font-weight: 600;
+}
+.hero-description {
+  max-width: 480px;
+  margin: 25px 0 30px;
+  line-height: 2;
+}
+.eyebrow {
+  letter-spacing: 1px;
+  font-size: 12px;
+  color: var(--accent-ink);
+  font-weight: 500;
+}
+.hero-actions {
+  gap: 13px;
+  flex-wrap: wrap;
+}
+.page[data-frame="tutorial"] a.button {
+  border-radius: 9px;
+  padding: 13px 17px;
+  font-size: 13px;
+}
+.hero-story {
+  position: relative;
+  background: var(--accent-soft);
+  border-radius: 24px;
+  padding: 28px;
+  border: 1px solid color-mix(in srgb, var(--secondary) 12%, var(--rule));
+  transform: rotate(1deg);
+}
+.story-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--accent-ink);
+  font-size: 11px;
+}
+.story-top > span:first-child {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.story-top > span:last-child {
+  color: var(--gray);
+}
+.story-note {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 22px 0 20px;
+}
+.story-avatar {
+  display: grid;
+  place-items: center;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--warm);
+}
+.story-note p {
+  font-size: 17px;
+  line-height: 1.85;
+  margin: 0;
+  color: var(--dark);
+}
+.story-reply {
+  background: var(--surface);
+  border-radius: 14px;
+  padding: 20px 23px;
+}
+.story-reply .micro-label {
+  font-size: 11px;
+  color: var(--accent-ink);
+}
+.story-reply > p {
+  line-height: 1.9;
+  font-size: 13px;
+  margin: 10px 0 16px;
+  color: var(--darkgray);
+}
+.story-paper {
+  border-top: 1px dashed var(--rule);
+  padding-top: 14px;
+}
+.story-paper > span:first-child {
+  font-size: 12px;
+  color: var(--dark);
+}
+.story-paper p {
+  font-size: 12px;
+  color: var(--gray);
+  margin: 10px 0;
+}
+.paper-line {
+  display: block;
+  height: 5px;
+  width: 85%;
+  border-radius: 4px;
+  background: var(--surface-soft);
+  margin-top: 9px;
+}
+.paper-line.short {
+  width: 62%;
+}
+.page[data-frame="tutorial"] a.story-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 19px 4px 0;
+  font-size: 12px;
+  font-weight: 500;
+}
+.story-stamp {
+  position: absolute;
+  right: -19px;
+  top: -18px;
+  height: 77px;
+  width: 77px;
+  background: var(--warm-soft);
+  color: var(--warm);
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--warm) 20%, transparent);
+  display: grid;
+  place-content: center;
+  text-align: center;
+  transform: rotate(11deg);
+  font-size: 11px;
+  line-height: 1.7;
+}
+.everyday-section {
+  margin-top: 0;
+  padding-top: 14px;
+}
+.section-heading h2 {
+  font-size: 27px;
+  font-weight: 600;
+  line-height: 1.6;
+}
+.everyday-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 15px;
+  margin-top: 28px;
+}
+.page[data-frame="tutorial"] a.everyday-card {
+  position: relative;
+  display: block;
+  padding: 25px 24px 24px;
+  border: 1px solid var(--rule);
+  border-radius: 13px;
+  background: var(--surface);
+  transition:
+    border-color 0.18s,
+    transform 0.18s;
+}
+.everyday-card:hover {
+  border-color: var(--secondary) !important;
+  transform: translateY(-3px);
+}
+.everyday-icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  background: var(--accent-soft);
+  border-radius: 12px;
+  color: var(--accent-ink);
+  margin-bottom: 20px;
+}
+.everyday-card:nth-child(2n) .everyday-icon {
+  background: var(--warm-soft);
+  color: var(--warm);
+}
+.everyday-card h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 9px;
+  color: var(--dark);
+}
+.everyday-card p {
+  font-size: 13px;
+  line-height: 1.9;
+  margin: 0;
+  font-weight: 400;
+  color: var(--gray);
+}
+.everyday-arrow {
+  position: absolute;
+  top: 29px;
+  right: 25px;
+  color: var(--gray);
+}
+.page[data-frame="tutorial"] a.tools-feature {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 27px 30px;
+  border-radius: 13px;
+  margin-top: 17px;
+  background: var(--accent-soft);
+}
+.tools-feature-icon {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  color: var(--accent-ink);
+  background: var(--surface);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.tools-feature > div {
+  flex: 1;
+}
+.tools-feature h3 {
+  color: var(--dark);
+  font-size: 21px;
+  font-weight: 600;
+  margin: 6px 0 8px;
+}
+.tools-feature p {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.8;
+  color: var(--darkgray);
+  margin: 0;
+}
+.tools-feature .micro-label {
+  font-size: 11px;
+  color: var(--accent-ink);
+}
+.advisor {
+  padding: 0;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 13px;
+}
+.advisor-invitation {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 26px 29px;
+  list-style: none;
+}
+.advisor-invitation::-webkit-details-marker {
+  display: none;
+}
+.advisor-invitation-icon {
+  display: grid;
+  place-items: center;
+  width: 43px;
+  height: 43px;
+  background: var(--warm-soft);
+  color: var(--warm);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.advisor-invitation > span:nth-child(2) {
+  flex: 1;
+}
+.advisor-invitation strong {
+  display: block;
+  color: var(--dark);
+  font-size: 17px;
+  font-weight: 550;
+  line-height: 1.8;
+}
+.advisor-invitation small {
+  display: block;
+  margin-top: 5px;
+  color: var(--gray);
+  font-size: 12px;
+  line-height: 1.8;
+}
+.advisor-toggle {
+  font-size: 12px;
+  color: var(--accent-ink);
+  white-space: nowrap;
+}
+.advisor-toggle > span {
+  display: inline-block;
+  font-size: 18px;
+  transition: transform 0.2s;
+}
+.advisor[open] .advisor-toggle > span {
+  transform: rotate(45deg);
+}
+.advisor-body {
+  padding: 0 29px 29px;
+  border-top: 1px solid var(--rule);
+}
+.advisor-body .section-heading {
+  padding-top: 27px;
+}
+.advisor-body h2 {
+  font-size: 21px;
+}
+.track-section {
+  padding-block: 36px;
+  grid-template-columns: 265px minmax(0, 1fr);
+  gap: 45px;
+}
+.track-icon {
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  border-radius: 10px;
+}
+.track-intro h3 {
+  font-size: 21px;
+  font-weight: 550;
+  line-height: 1.6;
+  margin-block: 7px 12px;
+}
+.track-intro div > p:last-child {
+  font-size: 13px;
+  line-height: 1.9;
+}
+.page[data-frame="tutorial"] a.course-link {
+  padding: 18px 4px;
+}
+.article-info strong {
+  font-weight: 550;
+  font-size: 16px;
+  line-height: 1.75;
+}
+.article-info > span {
+  font-size: 12px;
+  line-height: 1.8;
+}
+.article-index {
+  color: var(--warm);
+  font-size: 11px;
+}
+.article-arrow {
+  color: var(--gray);
+}
+.article-info small {
+  font-size: 10px;
+}
+.optional-track {
+  background: transparent;
+  border-color: var(--rule);
+}
+.optional-track > summary {
+  padding: 18px;
+  font-size: 14px;
+}
+.page[data-frame="tutorial"] a.project-card {
+  border-radius: 13px;
+  padding: 27px;
+  background: var(--surface);
+}
+.project-card h3 {
+  font-size: 20px;
+  line-height: 1.6;
+  font-weight: 550;
+}
+.project-card p {
+  line-height: 1.9;
+  font-size: 13px;
+}
+.resource-strip {
+  border-radius: 13px;
+}
+.knowledge-stats {
+  margin-top: 48px;
+  font-size: 12px;
+  border: 0;
+  color: var(--gray);
+}
+.knowledge-stats strong {
+  font-size: 16px;
+  font-weight: 500;
+}
+.reading-layout {
+  max-width: 1370px;
+  padding-top: 40px;
+  grid-template-columns: 225px minmax(0, 710px) 155px;
+  gap: 40px;
+}
+.course-group summary {
+  font-size: 12px;
+}
+.page[data-frame="tutorial"] .course-group a {
+  font-size: 12px;
+  padding-block: 8px;
+}
+.course-meta {
+  font-size: 11px;
+  margin-bottom: 26px;
+}
+.reading-main article h1 {
+  font-size: 34px;
+  line-height: 1.5;
+  font-weight: 600;
+  letter-spacing: -0.6px;
+  margin-bottom: 14px;
+}
+.reading-main article p.article-deck {
+  color: var(--gray);
+  font-size: 16px;
+  line-height: 1.9;
+  margin: 0 0 37px;
+  padding-bottom: 26px;
+  border-bottom: 1px solid var(--rule);
+}
+.reading-main article h2 {
+  font-size: 23px;
+  font-weight: 600;
+  margin-top: 2.6em;
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+.reading-main article h2::before {
+  content: "";
+  display: block;
+  width: 24px;
+  height: 3px;
+  background: var(--tertiary);
+  border-radius: 2px;
+  margin-bottom: 14px;
+}
+.reading-main article h3 {
+  font-weight: 600;
+  font-size: 19px;
+}
+.reading-main article .external-icon {
+  opacity: 0.5;
+}
+.reading-main article blockquote {
+  background: var(--accent-soft);
+  color: var(--darkgray);
+  padding: 12px 20px;
+  border-radius: 0 9px 9px 0;
+  margin-inline: 0;
+}
+.reading-main article blockquote p {
+  margin: 0.5em 0;
+}
+.reading-main article pre {
+  background: var(--surface);
+  border-radius: 11px;
+}
+.reading-main article th {
+  background: var(--accent-soft);
+}
+.reading-context {
+  margin-top: 36px;
+  background: transparent;
+}
+.reading-toc {
+  opacity: 0.9;
+}
+@media (max-width: 1180px) {
+  .hero {
+    gap: 38px;
+  }
+  .reading-layout {
+    grid-template-columns: 210px minmax(0, 710px);
+    gap: 34px;
+  }
+  .track-section {
+    grid-template-columns: 235px minmax(0, 1fr);
+    gap: 28px;
+  }
+}
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    padding: 55px 0 60px;
+  }
+  .hero h1 {
+    font-size: 42px;
+  }
+  .hero-description {
+    font-size: 14px;
+  }
+  .hero-story {
+    padding: 20px;
+  }
+  .story-note p {
+    font-size: 15px;
+  }
+  .story-reply {
+    padding: 18px;
+  }
+  .story-stamp {
+    right: -8px;
+    top: -24px;
+    width: 65px;
+    height: 65px;
+  }
+  .everyday-grid {
+    gap: 11px;
+  }
+  .page[data-frame="tutorial"] a.everyday-card {
+    padding: 21px 18px;
+  }
+  .track-section {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .reading-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 780px;
+    padding-top: 24px;
+  }
+}
+@media (max-width: 600px) {
+  .site-header {
+    padding: 19px 21px 14px;
+  }
+  .brand-copy small {
+    font-size: 9px;
+    letter-spacing: 0.2px;
+  }
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 43px;
+    padding: 42px 0 49px;
+  }
+  .hero h1 {
+    font-size: 43px;
+    letter-spacing: -1.5px;
+  }
+  .hero .eyebrow {
+    font-size: 11px;
+    margin-bottom: 20px;
+  }
+  .hero-description {
+    font-size: 14px;
+    max-width: 340px;
+  }
+  .hero-story {
+    margin-inline: 3px;
+    border-radius: 19px;
+    padding: 23px;
+    transform: rotate(0.5deg);
+  }
+  .story-top {
+    font-size: 10px;
+  }
+  .story-stamp {
+    top: -20px;
+    right: -8px;
+  }
+  .everyday-section {
+    margin-top: 0;
+  }
+  .section-heading h2 {
+    font-size: 23px;
+  }
+  .everyday-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 11px;
+    margin-top: 24px;
+  }
+  .page[data-frame="tutorial"] a.everyday-card {
+    padding: 20px 17px;
+  }
+  .everyday-card h3 {
+    font-size: 16px;
+  }
+  .everyday-card p {
+    font-size: 12px;
+    line-height: 1.8;
+  }
+  .everyday-icon {
+    width: 36px;
+    height: 36px;
+    margin-bottom: 15px;
+  }
+  .everyday-arrow {
+    top: 22px;
+    right: 16px;
+    width: 14px;
+  }
+  .page[data-frame="tutorial"] a.tools-feature {
+    padding: 23px 19px;
+    gap: 13px;
+  }
+  .tools-feature-icon {
+    width: 39px;
+    height: 39px;
+  }
+  .tools-feature-icon svg {
+    width: 21px;
+  }
+  .tools-feature h3 {
+    font-size: 19px;
+  }
+  .tools-feature > svg {
+    display: none;
+  }
+  .tools-feature p {
+    font-size: 12px;
+  }
+  .advisor-invitation {
+    padding: 22px 18px;
+    gap: 13px;
+    flex-wrap: wrap;
+  }
+  .advisor-invitation strong {
+    font-size: 15px;
+  }
+  .advisor-invitation small {
+    font-size: 11px;
+  }
+  .advisor-invitation-icon {
+    width: 36px;
+    height: 36px;
+  }
+  .advisor-toggle {
+    flex-basis: 100%;
+    text-align: right;
+  }
+  .advisor-body {
+    padding: 0 18px 23px;
+  }
+  .track-section {
+    padding-block: 29px;
+    gap: 20px;
+  }
+  .track-intro h3 {
+    font-size: 20px;
+  }
+  .article-info strong {
+    font-size: 15px;
+  }
+  .article-info > span {
+    font-size: 12px;
+  }
+  .optional-track > summary {
+    flex-wrap: wrap;
+    font-size: 13px;
+  }
+  .optional-track > summary small {
+    flex-basis: 100%;
+    margin-left: 0;
+  }
+  .reading-main article h1 {
+    font-size: 28px;
+    line-height: 1.6;
+    margin-bottom: 13px;
+  }
+  .reading-main article p.article-deck {
+    font-size: 14px;
+    padding-bottom: 23px;
+    margin-bottom: 29px;
+  }
+  .reading-main article h2 {
+    font-size: 21px;
+  }
+  .reading-main article h3 {
+    font-size: 18px;
+  }
+  .course-meta .duration {
+    margin-left: 0;
+  }
+  .knowledge-stats {
+    gap: 15px 25px;
+    justify-content: center;
+    flex-wrap: wrap;
   }
 }
 @media (prefers-reduced-motion: reduce) {

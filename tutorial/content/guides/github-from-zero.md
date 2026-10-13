@@ -80,7 +80,7 @@ GitHub Desktop 的基础对应关系是：Clone repository 下载仓库；Change
 
 ## 从本地修改，再回到网页核对
 
-完成前面的 Clone 后，在这个**自己的练习仓库**中继续。确认 `git status` 没有尚未处理的修改，先新建分支：
+完成前面的 Clone 后，在这个**自己的练习仓库** 中继续。确认 `git status` 没有尚未处理的修改，先新建分支：
 
 ~~~sh
 git switch -c add-local-note

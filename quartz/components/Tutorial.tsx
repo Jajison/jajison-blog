@@ -20,6 +20,12 @@ import {
   Search,
   Route,
   ShieldCheck,
+  MessageCircle,
+  PenLine,
+  Sparkles,
+  FileText,
+  GraduationCap,
+  Table2,
 } from "lucide-preact"
 import { LearningLabs } from "./LearningLabs"
 // @ts-ignore bundled as a client script by Quartz
@@ -58,7 +64,7 @@ export const TutorialBrand: QuartzComponent = (props) => (
       <strong>
         Jajison<span> / </span>把 AI 用起来
       </strong>
-      <small>从零认识 · 日常用法 · 做成一件事</small>
+      <small>写给每一个想把 AI 用好的人</small>
     </span>
   </a>
 )
@@ -67,8 +73,8 @@ TutorialBrand.afterDOMLoaded = learningScript
 export const TutorialNav: QuartzComponent = (props) => (
   <nav class="top-nav" aria-label="主导航">
     {[
-      ["start", "学习起点"],
-      ["#courses", "日常用法"],
+      ["guides/choose-an-ai-agent", "认识 AI 工具"],
+      ["#courses", "学点实用的"],
       ["#track-harness-practice", "工具实战"],
       ["troubleshooting", "遇到问题"],
     ].map(([slug, label]) => (
@@ -146,10 +152,11 @@ export const CourseMeta: QuartzComponent = (props) => {
   return (
     <div class="course-meta">
       <a class="internal" href={href(props)}>
-        知识库
+        首页
       </a>
       <span>/</span>
       <span>{track?.title ?? (slug === "labs" ? "原理实验室" : "学习资源")}</span>
+      {track?.optional && <span class="optional-label">按需拓展 · 不必先学</span>}
       {typeof duration === "number" && <span class="duration">阅读与练习约 {duration} 分钟</span>}
     </div>
   )
@@ -182,7 +189,7 @@ function ProgressTools() {
 export const TutorialFooter: QuartzComponent = (props) => (
   <footer class="tutorial-footer">
     <div>
-      <strong>把 AI 用起来，也把它弄明白。</strong>
+      <strong>慢慢学，一起把 AI 用起来。</strong>
       <p>Jajison · 持续整理的 AI 学习与实践笔记</p>
     </div>
     <nav aria-label="页脚导航">
@@ -208,24 +215,24 @@ export const TutorialHome: QuartzComponent = (props) => {
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero-copy">
           <p class="eyebrow">
-            <span class="status-dot" /> JAJISON / LEARNING NOTES
+            <span class="status-dot" /> 从好奇开始，从一件小事上手
           </p>
           <h1 id="hero-title">
-            不懂计算机，
+            AI 很新，
             <br />
-            也能把 <em>AI 用到生活里。</em>
+            <em>你可以慢慢学。</em>
           </h1>
           <p class="hero-description">
-            写作、查资料、学新东西，整理表格和文件，
+            不需要懂代码，也不用先记一堆术语。
             <br class="desktop-break" />
-            一步一步学会选工具、提需求、改结果，做成自己的事。
+            从写一封邮件、看懂一份材料开始， 把 AI 变成生活和工作里用得上的帮手。
           </p>
           <div class="hero-actions">
-            <a class="button primary internal" href={href(props, "start")}>
-              找到我的起点 <ArrowRight size={16} />
+            <a class="button primary internal" href={href(props, "guides/choose-an-ai-agent")}>
+              先认识常用 AI 工具 <ArrowRight size={16} />
             </a>
-            <a class="button secondary internal" href={href(props, "guides/asking-and-iterating")}>
-              <BookOpen size={17} /> 先学一次完整用法
+            <a class="button secondary internal" href={href(props, "#learning-advisor")}>
+              <Route size={17} /> 找到适合我的用法
             </a>
           </div>
           <a
@@ -235,160 +242,222 @@ export const TutorialHome: QuartzComponent = (props) => {
             hidden
           />
         </div>
-        <div class="hero-map" aria-label="从找到用途到完成成果的学习地图">
-          <div class="map-heading">
+        <div class="hero-story" aria-label="一封邮件的使用示例">
+          <div class="story-top">
             <span>
-              <Route size={16} /> 一张能走通的学习地图
+              <Sparkles size={16} /> 一个日常小例子
             </span>
-            <span>LEARN → USE</span>
+            <span>01 / 写邮件</span>
           </div>
-          <a class="map-step internal" href={href(props, "guides/computer-and-os")}>
-            <span class="map-number">01</span>
-            <div>
-              <strong>从自己的起点开始</strong>
-              <span>找文件 · 上传资料 · 认识 AI 工具</span>
+          <div class="story-note">
+            <span class="story-avatar">
+              <PenLine size={18} />
+            </span>
+            <p>
+              想请同事周五前交材料，
+              <br />
+              怎么说得清楚，又不生硬？
+            </p>
+          </div>
+          <div class="story-reply">
+            <span class="micro-label">先说清楚，再一起修改</span>
+            <p>
+              给 AI 背景、时间和收件人，
+              <br />
+              请它先写一版；再把不自然的句子改掉。
+            </p>
+            <div class="story-paper">
+              <span>主题：请于周五前补充活动材料</span>
+              <p>大家好，为了整理本次活动……</p>
+              <span class="paper-line" />
+              <span class="paper-line short" />
             </div>
-            <Monitor size={21} />
+          </div>
+          <a class="internal story-link" href={href(props, "guides/writing-and-editing")}>
+            跟着把这封邮件写好 <ArrowRight size={16} />
           </a>
-          <span class="map-connector" aria-hidden="true" />
-          <a class="map-step internal" href={href(props, "guides/asking-and-iterating")}>
-            <span class="map-number">02</span>
-            <div>
-              <strong>让 AI 帮你完成任务</strong>
-              <span>写作 · 查资料 · 表格 · 文档 · 学习</span>
-            </div>
-            <Cpu size={21} />
-          </a>
-          <span class="map-connector" aria-hidden="true" />
-          <a class="map-step internal" href={href(props, "guides/choose-an-ai-agent")}>
-            <span class="map-number">03</span>
-            <div>
-              <strong>从聊天走到实际成果</strong>
-              <span>Codex · WorkBuddy · 文件与小工具</span>
-            </div>
-            <ShieldCheck size={21} />
-          </a>
-          <p>每一步说明怎么做，也说明怎样知道做对了。</p>
+          <span class="story-stamp">
+            从“听说过”
+            <br />
+            到“我会用”
+          </span>
         </div>
       </section>
-      <div class="knowledge-stats" aria-label="知识库内容">
-        <span>
-          <strong>{slugs.length}</strong> 篇系统文章
-        </span>
-        <span>
-          <strong>{tracks.length}</strong> 条学习路径
-        </span>
-        <span>
-          <strong>16</strong> 篇日常使用指南
-        </span>
-        <span>
-          <strong>{questions}</strong> 道文内自测
-        </span>
-      </div>
-      <section class="entry-section" aria-label="按经验选择起点">
-        <a class="entry-link internal" href={href(props, "guides/computer-and-os")}>
-          <Monitor size={22} />
-          <div>
-            <h2>第一次接触这些？</h2>
-            <p>从找文件、打开材料和第一次对话开始。</p>
-          </div>
-          <ArrowUpRight size={20} />
-        </a>
-        <a class="entry-link internal" href={href(props, "guides/ai-tool-types")}>
-          <Layers3 size={22} />
-          <div>
-            <h2>会聊天，但还没用顺？</h2>
-            <p>按用途选工具，学会给材料、改结果和保存成果。</p>
-          </div>
-          <ArrowUpRight size={20} />
-        </a>
-      </section>
-      <section class="advisor home-section" id="learning-advisor" aria-labelledby="advisor-title">
+      <section class="home-section everyday-section" aria-labelledby="everyday-title">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">YOUR LEARNING ROUTE</p>
-            <h2 id="advisor-title">告诉我你的基础和目的，生成一条可走的路线</h2>
+            <p class="eyebrow">先从你关心的事开始</p>
+            <h2 id="everyday-title">今天，想让 AI 帮你做什么？</h2>
           </div>
+          <a class="text-link internal" href={href(props, "start")}>
+            第一次来？读这份指引 <ArrowRight size={16} />
+          </a>
         </div>
-        <p class="section-intro">
-          按你熟悉的操作和想做的事推荐，不要求会编程。这些选择只在浏览器中处理；建议是起点参考，可以随时改选。
-        </p>
-        <form id="learning-profile" class="advisor-form enhanced-only">
-          <label>
-            目前最接近你的基础
-            <select name="level" required>
-              <option value="new">刚接触电脑文件、安装和 AI</option>
-              <option value="office">熟悉电脑和办公软件，没写过代码</option>
-              <option value="code">会一些开发工具，可以跳过电脑基础</option>
-            </select>
-          </label>
-          <label>
-            最想实现的目标
-            <select name="goal" required>
-              <option value="office">整理资料、表格、报告与 PPT</option>
-              <option value="write">写邮件、总结、文章或简历</option>
-              <option value="learn">学新知识、练语言与复习</option>
-              <option value="research">查资料、比较选择与核对事实</option>
-              <option value="build">做自己的小网页或工作工具</option>
-            </select>
-          </label>
-          <label>
-            主要使用的系统
-            <select name="platform" required>
-              <option value="windows">Windows</option>
-              <option value="mac">macOS</option>
-              <option value="other">Linux / 暂不确定</option>
-            </select>
-          </label>
-          <label>
-            每周可投入的时间
-            <select name="pace" required>
-              <option value="short">不到 2 小时</option>
-              <option value="steady">2–5 小时</option>
-              <option value="deep">5 小时以上</option>
-            </select>
-          </label>
-          <fieldset class="advisor-skills">
-            <legend>哪些操作已经熟悉？（可多选，也可以不选）</legend>
-            <label>
-              <input type="checkbox" name="skills" value="files" />
-              找到下载文件，建立文件夹
-            </label>
-            <label>
-              <input type="checkbox" name="skills" value="uploads" />给 AI 上传或粘贴相关资料
-            </label>
-            <label>
-              <input type="checkbox" name="skills" value="tables" />
-              查看表格，核对行列和金额
-            </label>
-          </fieldset>
-          <button type="submit" class="button primary">
-            生成我的学习路线 <ArrowRight size={16} />
-          </button>
-        </form>
-        <noscript>
-          <p>
-            当前浏览器未运行页面脚本，可以直接用
-            <a class="internal" href={href(props, "start")}>
-              用途与学习起点表
-            </a>
-            选择路线。
-          </p>
-        </noscript>
-        <div id="advisor-result" class="advisor-result" role="status" aria-live="polite" hidden />
+        <div class="everyday-grid">
+          {[
+            [
+              PenLine,
+              "guides/writing-and-editing",
+              "写得更清楚",
+              "邮件、总结、简历，先写一版，再改成自己的话。",
+            ],
+            [
+              Search,
+              "guides/research-and-fact-checking",
+              "查明白一件事",
+              "找资料、比选择，学会顺着出处核对。",
+            ],
+            [
+              GraduationCap,
+              "guides/learning-with-ai",
+              "学会新东西",
+              "从听懂解释到自己做一遍，让 AI 陪你练。",
+            ],
+            [
+              Table2,
+              "guides/data-workflows",
+              "理顺表格和数据",
+              "从四条记录开始，把数字、单位和结论弄清楚。",
+            ],
+            [
+              FileText,
+              "guides/slides-and-documents",
+              "做好文档和演示",
+              "从零散材料到一份别人看得懂的报告。",
+            ],
+            [
+              Code2,
+              "guides/codex-from-zero",
+              "做一个自己的工具",
+              "说清想法，用 Codex 做出可以打开的小网页。",
+            ],
+          ].map(([Icon, slug, heading, description]) => {
+            const TaskIcon = Icon as typeof PenLine
+            return (
+              <a class="everyday-card internal" href={href(props, String(slug))}>
+                <span class="everyday-icon">
+                  <TaskIcon size={23} />
+                </span>
+                <h3>{heading}</h3>
+                <p>{description}</p>
+                <ArrowUpRight class="everyday-arrow" size={17} />
+              </a>
+            )
+          })}
+        </div>
+        <a class="tools-feature internal" href={href(props, "guides/choose-an-ai-agent")}>
+          <span class="tools-feature-icon">
+            <MessageCircle size={27} />
+          </span>
+          <div>
+            <span class="micro-label">不知道这些工具有什么区别？</span>
+            <h3>带你了解常用 AI 工具</h3>
+            <p>
+              豆包、DeepSeek、ChatGPT、Gemini、Claude，还有会处理文件的助手。先认识，再选，再用。
+            </p>
+          </div>
+          <ArrowRight size={22} />
+        </a>
       </section>
+      <details class="advisor home-section" id="learning-advisor">
+        <summary class="advisor-invitation">
+          <span class="advisor-invitation-icon">
+            <Route size={24} />
+          </span>
+          <span>
+            <strong id="advisor-title">还不确定从哪开始？为自己选一条路线</strong>
+            <small>告诉我你的基础、目的和时间，几项选择就好。</small>
+          </span>
+          <span class="advisor-toggle">
+            选择路线 <span aria-hidden="true">＋</span>
+          </span>
+        </summary>
+        <div class="advisor-body">
+          <div class="section-heading">
+            <div>
+              <h2>按自己的节奏来</h2>
+            </div>
+          </div>
+          <p class="section-intro">
+            按你熟悉的操作和想做的事推荐，不要求会编程。这些选择只在浏览器中处理；建议是起点参考，可以随时改选。
+          </p>
+          <form id="learning-profile" class="advisor-form enhanced-only">
+            <label>
+              目前最接近你的基础
+              <select name="level" required>
+                <option value="new">刚接触电脑文件、安装和 AI</option>
+                <option value="office">熟悉电脑和办公软件，没写过代码</option>
+                <option value="code">会一些开发工具，可以跳过电脑基础</option>
+              </select>
+            </label>
+            <label>
+              最想实现的目标
+              <select name="goal" required>
+                <option value="office">整理资料、表格、报告与 PPT</option>
+                <option value="write">写邮件、总结、文章或简历</option>
+                <option value="learn">学新知识、练语言与复习</option>
+                <option value="research">查资料、比较选择与核对事实</option>
+                <option value="build">做自己的小网页或工作工具</option>
+              </select>
+            </label>
+            <label>
+              主要使用的系统
+              <select name="platform" required>
+                <option value="windows">Windows</option>
+                <option value="mac">macOS</option>
+                <option value="other">Linux / 暂不确定</option>
+              </select>
+            </label>
+            <label>
+              每周可投入的时间
+              <select name="pace" required>
+                <option value="short">不到 2 小时</option>
+                <option value="steady">2–5 小时</option>
+                <option value="deep">5 小时以上</option>
+              </select>
+            </label>
+            <fieldset class="advisor-skills">
+              <legend>哪些操作已经熟悉？（可多选，也可以不选）</legend>
+              <label>
+                <input type="checkbox" name="skills" value="files" />
+                找到下载文件，建立文件夹
+              </label>
+              <label>
+                <input type="checkbox" name="skills" value="uploads" />给 AI 上传或粘贴相关资料
+              </label>
+              <label>
+                <input type="checkbox" name="skills" value="tables" />
+                查看表格，核对行列和金额
+              </label>
+            </fieldset>
+            <button type="submit" class="button primary">
+              生成我的学习路线 <ArrowRight size={16} />
+            </button>
+          </form>
+          <noscript>
+            <p>
+              当前浏览器未运行页面脚本，可以直接用
+              <a class="internal" href={href(props, "start")}>
+                用途与学习起点表
+              </a>
+              选择路线。
+            </p>
+          </noscript>
+          <div id="advisor-result" class="advisor-result" role="status" aria-live="polite" hidden />
+        </div>
+      </details>
       <section class="home-section" id="courses" aria-labelledby="courses-title">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">THE KNOWLEDGE MAP</p>
-            <h2 id="courses-title">按用途学习，从一件小事开始</h2>
+            <p class="eyebrow">慢慢展开你的用法</p>
+            <h2 id="courses-title">一本可以按需翻阅的 AI 使用手册</h2>
           </div>
           <a class="text-link internal" href={href(props, "start")}>
             阅读路线说明 <ArrowRight size={16} />
           </a>
         </div>
         <p class="section-intro">
-          前五条路线围绕日常使用，不需要编程。后面的开发与原理内容按需展开，遇到相关问题时再学。
+          从认识工具，到聊清楚需求，再到真正完成工作。前五章不要求编程；每篇都有例子和练习，读完一篇，用一次就好。
         </p>
         <div class="course-toolbar enhanced-only">
           <label class="filter-search">
@@ -464,7 +533,7 @@ export const TutorialHome: QuartzComponent = (props) => {
                             <small>
                               <span data-read-marker class="read-marker" />
                               {Number(file?.frontmatter?.duration) || "—"} 分钟 ·{" "}
-                              {slug.startsWith("guides/") ? "专题指南" : "核心课程"}
+                              {track.optional ? "按需阅读" : "含动手练习"}
                             </small>
                           </span>
                           <ArrowUpRight class="article-arrow" size={17} />
@@ -496,7 +565,7 @@ export const TutorialHome: QuartzComponent = (props) => {
       <section class="home-section" id="projects" aria-labelledby="projects-title">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">PUT IT INTO PRACTICE</p>
+            <p class="eyebrow">读过之后，亲手试试</p>
             <h2 id="projects-title">带着一个结果离开</h2>
           </div>
           <a class="text-link" href={href(props, "downloads/ai-workshop.zip")} download>
@@ -554,6 +623,18 @@ export const TutorialHome: QuartzComponent = (props) => {
           </a>
         ))}
       </section>
+      <div class="knowledge-stats" aria-label="手册内容">
+        <span>
+          <strong>{slugs.length}</strong> 篇文章
+        </span>
+        <span>
+          <strong>{tracks.length}</strong> 条路线
+        </span>
+        <span>
+          <strong>{questions}</strong> 道自测
+        </span>
+        <span>持续补充 · 一起慢慢学</span>
+      </div>
     </div>
   )
 }
@@ -705,7 +786,6 @@ export const TutorialFrame: PageFrame = {
                   <Component {...props} />
                 ))}
               </div>
-              <ReadingContext {...props} />
               {!isLabs && Array.isArray(props.fileData.toc) && props.fileData.toc.length > 0 && (
                 <details class="mobile-toc">
                   <summary>本页目录</summary>
@@ -722,6 +802,7 @@ export const TutorialFrame: PageFrame = {
               </div>
               {isLabs && <LearningLabs />}
               <div class="page-footer">
+                <ReadingContext {...props} />
                 {afterBody.map((Component) => (
                   <Component {...props} />
                 ))}

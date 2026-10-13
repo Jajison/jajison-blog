@@ -74,6 +74,8 @@ document.addEventListener("nav", () => {
       advisorResult.hidden = false
     }
     if (selectedProfile) {
+      const invitation = document.querySelector<HTMLDetailsElement>("#learning-advisor")
+      if (invitation) invitation.open = true
       for (const name of ["level", "goal", "platform", "pace"] as const) {
         const field = advisor.elements.namedItem(name)
         if (field instanceof HTMLSelectElement) field.value = selectedProfile[name]
@@ -107,6 +109,26 @@ document.addEventListener("nav", () => {
       { signal },
     )
   }
+  const openAdvisor = () => {
+    if (location.hash !== "#learning-advisor") return
+    const invitation = document.querySelector<HTMLDetailsElement>("#learning-advisor")
+    if (invitation) invitation.open = true
+  }
+  openAdvisor()
+  window.addEventListener("hashchange", openAdvisor, { signal })
+  document.addEventListener(
+    "click",
+    (event) => {
+      const link = (event.target as Element)?.closest<HTMLAnchorElement>("a[href]")
+      if (!link) return
+      const target = new URL(link.href, location.href)
+      if (target.pathname === location.pathname && target.hash === "#learning-advisor") {
+        const invitation = document.querySelector<HTMLDetailsElement>("#learning-advisor")
+        if (invitation) invitation.open = true
+      }
+    },
+    { signal, capture: true },
+  )
   const text = (selector: string, value: string) =>
     document.querySelectorAll<HTMLElement>(selector).forEach((element) => {
       element.textContent = value

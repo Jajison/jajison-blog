@@ -1,10 +1,10 @@
 ---
-title: "从这里开始：找到用途，把 AI 用到自己的任务里"
+title: "第一次来，从这里开始"
 description: "不要求会编程。按已有操作基础与学习目的选择写作、查资料、表格、文件、学习或小工具路线。"
 tags: [入门, 路线, 学习目的]
 ---
 
-# 从这里开始：找到用途，把 AI 用到自己的任务里
+# 第一次来，从这里开始
 
 这里面向不懂计算机、但希望了解 AI 并用得更好的人。你不需要先学编程或模型公式。**先选一件自己想改善的事，完成一份能检查的成果，再补遇到的知识。**
 
@@ -15,7 +15,7 @@ tags: [入门, 路线, 学习目的]
 | 想做什么 | 先从哪里开始 | 第一次成果 |
 | --- | --- | --- |
 | 找文件、安装应用还不熟悉 | [认识电脑](guides/computer-and-os.md) → [文件与格式](learn/03-files-and-formats.md) | 能找到并打开练习材料 |
-| 不知道 AI 工具能做什么 | [找到用途](guides/stack-and-goals.md) → [工具地图](guides/ai-tool-types.md) | 为一个任务选对能力 |
+| 不知道 AI 工具能做什么 | [认识常用工具](guides/choose-an-ai-agent.md) → [选第一款工具](guides/ai-tool-types.md) | 为一个任务选对能力 |
 | 写通知、邮件、总结或简历 | [说清需求](guides/asking-and-iterating.md) → [写作与修改](guides/writing-and-editing.md) | 一份准确、易懂的成稿 |
 | 查资料、比较选择 | [查资料与核对](guides/research-and-fact-checking.md) | 一张有原文出处的比较表 |
 | 学知识、练语言 | [让 AI 帮你学会](guides/learning-with-ai.md) | 独立完成一道新练习 |
@@ -50,6 +50,6 @@ tags: [入门, 路线, 学习目的]
 
 想自己运行项目时，看 [工作环境](guides/editor-and-environment.md)、[GitHub](guides/github-from-zero.md)与 [小网页](learn/11-build-with-ai.md)。想理解 AI 工作方式时，从 [LLM](learn/15-llm.md)按需要查起；数学、Transformer、RAG 与工程路线在首页作为拓展内容折叠展示。
 
-全站有 52 篇路径文章，其中新补的 16 篇围绕日常使用。主线是使用；拓展内容帮助解决进一步遇到的问题。
+全站有 52 篇路径文章，前五章的 21 篇围绕电脑起步和日常使用。主线是使用；拓展内容帮助解决进一步遇到的问题。
 
 [查词](glossary.md) · [复制任务卡](prompt-cards.md) · [遇到问题](troubleshooting.md) · [保存自己的使用方法](guides/personal-ai-workflow.md)

@@ -16,10 +16,11 @@
     },
     {
       "id": "orientation",
-      "title": "选对起点，建立自己的 AI 用法",
-      "description": "按目的选工具，认识必需的基础，安排练习与预算。",
+      "title": "认识工具，找到自己的用法",
+      "description": "先认识常用助手，再按自己的任务选一个，把好用的方法留下来。",
       "level": "人人可读",
       "pages": [
+        "guides/choose-an-ai-agent",
         "guides/stack-and-goals",
         "guides/ai-tool-types",
         "guides/personal-ai-workflow",
@@ -58,7 +59,6 @@
       "description": "认识会动手的 AI，做出小工具、整理文件，并核对交付结果。",
       "level": "使用实践",
       "pages": [
-        "guides/choose-an-ai-agent",
         "guides/codex-from-zero",
         "guides/codex-workflows",
         "guides/workbuddy-from-zero",
