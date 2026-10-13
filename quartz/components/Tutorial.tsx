@@ -27,7 +27,20 @@ import learningScript from "./scripts/learning.inline"
 
 const tracks = curriculum.tracks
 const slugs = tracks.flatMap((track) => track.pages)
-const icons = [Monitor, Code2, GitBranch, Braces, Cpu, Search, Network, ShieldCheck]
+const icons: Record<string, typeof Monitor> = {
+  start: Monitor,
+  orientation: Route,
+  daily: BookOpen,
+  office: Layers3,
+  "harness-practice": Check,
+  workspace: Code2,
+  build: GitBranch,
+  foundations: Braces,
+  models: Cpu,
+  retrieval: Search,
+  agents: Network,
+  quality: ShieldCheck,
+}
 const title = (file?: QuartzPluginData) =>
   String(file?.frontmatter?.title ?? "").replace(/^\d+｜/, "")
 const href = (props: QuartzComponentProps, slug = "") =>
@@ -45,7 +58,7 @@ export const TutorialBrand: QuartzComponent = (props) => (
       <strong>
         Jajison<span> / </span>把 AI 用起来
       </strong>
-      <small>从零起步 · 理解原理 · 动手验证</small>
+      <small>从零认识 · 日常用法 · 做成一件事</small>
     </span>
   </a>
 )
@@ -54,10 +67,10 @@ TutorialBrand.afterDOMLoaded = learningScript
 export const TutorialNav: QuartzComponent = (props) => (
   <nav class="top-nav" aria-label="主导航">
     {[
-      ["start", "从零开始"],
-      ["#courses", "知识库"],
-      ["labs", "原理实验室"],
-      ["#projects", "实战"],
+      ["start", "学习起点"],
+      ["#courses", "日常用法"],
+      ["#track-harness-practice", "工具实战"],
+      ["troubleshooting", "遇到问题"],
     ].map(([slug, label]) => (
       <a
         class="internal"
@@ -90,6 +103,7 @@ export const CourseNav: QuartzComponent = (props) => {
           <summary>
             <span class="stage-number">{String(index + 1).padStart(2, "0")}</span>
             {track.title}
+            {track.optional && <small class="optional-label">按需</small>}
           </summary>
           <ol>
             {track.pages.map((slug) => (
@@ -197,21 +211,21 @@ export const TutorialHome: QuartzComponent = (props) => {
             <span class="status-dot" /> JAJISON / LEARNING NOTES
           </p>
           <h1 id="hero-title">
-            从认识电脑，
+            不懂计算机，
             <br />
-            到理解 <em>AI 的每一步。</em>
+            也能把 <em>AI 用到生活里。</em>
           </h1>
           <p class="hero-description">
-            Windows 和 Mac 怎么用，GitHub 从哪开始，
+            写作、查资料、学新东西，整理表格和文件，
             <br class="desktop-break" />
-            大模型如何工作，以及怎样亲手做出可靠的工具。
+            一步一步学会选工具、提需求、改结果，做成自己的事。
           </p>
           <div class="hero-actions">
             <a class="button primary internal" href={href(props, "start")}>
               找到我的起点 <ArrowRight size={16} />
             </a>
-            <a class="button secondary internal" href={href(props, "labs")}>
-              <FlaskConical size={17} /> 打开原理实验室
+            <a class="button secondary internal" href={href(props, "guides/asking-and-iterating")}>
+              <BookOpen size={17} /> 先学一次完整用法
             </a>
           </div>
           <a
@@ -221,40 +235,40 @@ export const TutorialHome: QuartzComponent = (props) => {
             hidden
           />
         </div>
-        <div class="hero-map" aria-label="从计算机基础到模型与工程的学习地图">
+        <div class="hero-map" aria-label="从找到用途到完成成果的学习地图">
           <div class="map-heading">
             <span>
               <Route size={16} /> 一张能走通的学习地图
             </span>
-            <span>LEARN → BUILD</span>
+            <span>LEARN → USE</span>
           </div>
           <a class="map-step internal" href={href(props, "guides/computer-and-os")}>
             <span class="map-number">01</span>
             <div>
-              <strong>先把基础接起来</strong>
-              <span>电脑 · 文件 · 终端 · GitHub</span>
+              <strong>从自己的起点开始</strong>
+              <span>找文件 · 上传资料 · 认识 AI 工具</span>
             </div>
             <Monitor size={21} />
           </a>
           <span class="map-connector" aria-hidden="true" />
-          <a class="map-step internal" href={href(props, "learn/14-transformer")}>
+          <a class="map-step internal" href={href(props, "guides/asking-and-iterating")}>
             <span class="map-number">02</span>
             <div>
-              <strong>看懂模型怎样计算</strong>
-              <span>数学 · Transformer · 训练与推理</span>
+              <strong>让 AI 帮你完成任务</strong>
+              <span>写作 · 查资料 · 表格 · 文档 · 学习</span>
             </div>
             <Cpu size={21} />
           </a>
           <span class="map-connector" aria-hidden="true" />
-          <a class="map-step internal" href={href(props, "guides/rag-engineering")}>
+          <a class="map-step internal" href={href(props, "guides/choose-an-ai-agent")}>
             <span class="map-number">03</span>
             <div>
-              <strong>做出来，再验证</strong>
-              <span>RAG · Agent · 测试与交付</span>
+              <strong>从聊天走到实际成果</strong>
+              <span>Codex · WorkBuddy · 文件与小工具</span>
             </div>
             <ShieldCheck size={21} />
           </a>
-          <p>每个概念都有来路，每次练习都有验收标准。</p>
+          <p>每一步说明怎么做，也说明怎样知道做对了。</p>
         </div>
       </section>
       <div class="knowledge-stats" aria-label="知识库内容">
@@ -265,7 +279,7 @@ export const TutorialHome: QuartzComponent = (props) => {
           <strong>{tracks.length}</strong> 条学习路径
         </span>
         <span>
-          <strong>3</strong> 个交互实验
+          <strong>16</strong> 篇日常使用指南
         </span>
         <span>
           <strong>{questions}</strong> 道文内自测
@@ -276,31 +290,105 @@ export const TutorialHome: QuartzComponent = (props) => {
           <Monitor size={22} />
           <div>
             <h2>第一次接触这些？</h2>
-            <p>从文件、操作系统和第一条命令开始。</p>
+            <p>从找文件、打开材料和第一次对话开始。</p>
           </div>
           <ArrowUpRight size={20} />
         </a>
-        <a class="entry-link internal" href={href(props, "guides/math-for-ai")}>
-          <Braces size={22} />
+        <a class="entry-link internal" href={href(props, "guides/ai-tool-types")}>
+          <Layers3 size={22} />
           <div>
-            <h2>想把原理真正弄懂？</h2>
-            <p>沿着向量、注意力、训练与推理深入。</p>
+            <h2>会聊天，但还没用顺？</h2>
+            <p>按用途选工具，学会给材料、改结果和保存成果。</p>
           </div>
           <ArrowUpRight size={20} />
         </a>
+      </section>
+      <section class="advisor home-section" id="learning-advisor" aria-labelledby="advisor-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">YOUR LEARNING ROUTE</p>
+            <h2 id="advisor-title">告诉我你的基础和目的，生成一条可走的路线</h2>
+          </div>
+        </div>
+        <p class="section-intro">
+          按你熟悉的操作和想做的事推荐，不要求会编程。这些选择只在浏览器中处理；建议是起点参考，可以随时改选。
+        </p>
+        <form id="learning-profile" class="advisor-form enhanced-only">
+          <label>
+            目前最接近你的基础
+            <select name="level" required>
+              <option value="new">刚接触电脑文件、安装和 AI</option>
+              <option value="office">熟悉电脑和办公软件，没写过代码</option>
+              <option value="code">会一些开发工具，可以跳过电脑基础</option>
+            </select>
+          </label>
+          <label>
+            最想实现的目标
+            <select name="goal" required>
+              <option value="office">整理资料、表格、报告与 PPT</option>
+              <option value="write">写邮件、总结、文章或简历</option>
+              <option value="learn">学新知识、练语言与复习</option>
+              <option value="research">查资料、比较选择与核对事实</option>
+              <option value="build">做自己的小网页或工作工具</option>
+            </select>
+          </label>
+          <label>
+            主要使用的系统
+            <select name="platform" required>
+              <option value="windows">Windows</option>
+              <option value="mac">macOS</option>
+              <option value="other">Linux / 暂不确定</option>
+            </select>
+          </label>
+          <label>
+            每周可投入的时间
+            <select name="pace" required>
+              <option value="short">不到 2 小时</option>
+              <option value="steady">2–5 小时</option>
+              <option value="deep">5 小时以上</option>
+            </select>
+          </label>
+          <fieldset class="advisor-skills">
+            <legend>哪些操作已经熟悉？（可多选，也可以不选）</legend>
+            <label>
+              <input type="checkbox" name="skills" value="files" />
+              找到下载文件，建立文件夹
+            </label>
+            <label>
+              <input type="checkbox" name="skills" value="uploads" />给 AI 上传或粘贴相关资料
+            </label>
+            <label>
+              <input type="checkbox" name="skills" value="tables" />
+              查看表格，核对行列和金额
+            </label>
+          </fieldset>
+          <button type="submit" class="button primary">
+            生成我的学习路线 <ArrowRight size={16} />
+          </button>
+        </form>
+        <noscript>
+          <p>
+            当前浏览器未运行页面脚本，可以直接用
+            <a class="internal" href={href(props, "start")}>
+              用途与学习起点表
+            </a>
+            选择路线。
+          </p>
+        </noscript>
+        <div id="advisor-result" class="advisor-result" role="status" aria-live="polite" hidden />
       </section>
       <section class="home-section" id="courses" aria-labelledby="courses-title">
         <div class="section-heading">
           <div>
             <p class="eyebrow">THE KNOWLEDGE MAP</p>
-            <h2 id="courses-title">知识库 · 选一条路径，逐步深入</h2>
+            <h2 id="courses-title">按用途学习，从一件小事开始</h2>
           </div>
           <a class="text-link internal" href={href(props, "start")}>
             阅读路线说明 <ArrowRight size={16} />
           </a>
         </div>
         <p class="section-intro">
-          同一知识点，从直觉解释走到公式、代码和失败案例。可以顺序学习，也可以从正在遇到的问题进入。
+          前五条路线围绕日常使用，不需要编程。后面的开发与原理内容按需展开，遇到相关问题时再学。
         </p>
         <div class="course-toolbar enhanced-only">
           <label class="filter-search">
@@ -308,7 +396,7 @@ export const TutorialHome: QuartzComponent = (props) => {
             <input
               id="course-filter"
               type="search"
-              placeholder="筛选文章：Windows、GitHub、注意力…"
+              placeholder="找用法：写作、表格、Codex、WorkBuddy…"
               aria-label="筛选课程文章"
             />
           </label>
@@ -323,15 +411,15 @@ export const TutorialHome: QuartzComponent = (props) => {
             只看未读
           </label>
           <span data-filter-count aria-live="polite">
-            显示 {slugs.length} / {slugs.length} 篇
+            匹配 {slugs.length} / {slugs.length} 篇
           </span>
         </div>
         <ProgressTools />
         <p class="progress-notice" data-progress-notice role="status" />
         <div class="curriculum">
           {tracks.map((track, index) => {
-            const Icon = icons[index]
-            return (
+            const Icon = icons[track.id] ?? BookOpen
+            const section = (
               <section
                 class="track-section"
                 id={"track-" + track.id}
@@ -344,7 +432,7 @@ export const TutorialHome: QuartzComponent = (props) => {
                   </span>
                   <div>
                     <p class="micro-label">
-                      {"0" + (index + 1)} / {track.level} · {track.pages.length} 篇
+                      {String(index + 1).padStart(2, "0")} / {track.level} · {track.pages.length} 篇
                     </p>
                     <h3 id={"track-title-" + track.id}>{track.title}</h3>
                     <p>{track.description}</p>
@@ -387,6 +475,18 @@ export const TutorialHome: QuartzComponent = (props) => {
                 </ol>
               </section>
             )
+            return track.optional ? (
+              <details class="optional-track" data-optional-track>
+                <summary>
+                  <span>按需拓展</span>
+                  {track.title}
+                  <small>{track.pages.length} 篇 · 想做工具或了解原理时再读</small>
+                </summary>
+                {section}
+              </details>
+            ) : (
+              section
+            )
           })}
         </div>
         <p class="empty-results" data-filter-empty hidden>
@@ -414,17 +514,17 @@ export const TutorialHome: QuartzComponent = (props) => {
             ],
             [
               "02",
-              "projects/02-work-tool",
-              "从脚本到自己的工作工具",
-              "运行 Python、查询 SQLite、调用本地 HTTP 接口，把输入真正变成输出。",
-              "Python 标准库 · 本地运行",
+              "guides/data-workflows",
+              "把一份小表格变成可核对的报告",
+              "说明统计范围，整理四条费用，再检查金额、状态与结果文件。",
+              "表格软件 + 可用的 AI 工具",
             ],
             [
               "03",
-              "projects/03-document-assistant",
-              "搭建有证据的资料问答流程",
-              "亲手检索、测量召回、观察预算与超时，再核对 AI 回答。",
-              "检索评估 · 受控执行",
+              "guides/codex-from-zero",
+              "做一个自己能用的待办小网页",
+              "说清需求，让 Codex 帮你做出来，再亲手检查新增、完成与导出。",
+              "Codex · 独立练习文件夹",
             ],
           ].map(([num, slug, heading, description, label]) => (
             <a class="project-card internal" href={href(props, slug)}>
@@ -508,7 +608,13 @@ function ReadingNext(props: QuartzComponentProps) {
         {[index - 1, index + 1].map((next, i) =>
           next >= 0 && next < slugs.length ? (
             <a class="internal" href={href(props, slugs[next])}>
-              <small>{i === 0 ? "← 路线上一篇" : "路线下一篇 →"}</small>
+              <small>
+                {i === 0
+                  ? "← 路线上一篇"
+                  : tracks.find((track) => track.pages.includes(slugs[next]))?.optional
+                    ? "按需拓展：路线下一篇 →"
+                    : "路线下一篇 →"}
+              </small>
               <strong>{title(files.get(slugs[next]))}</strong>
             </a>
           ) : (

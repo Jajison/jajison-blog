@@ -72,3 +72,5 @@ tags: [上下文, 验证]
 </details>
 
 [上一课](01-first-result.md) · [下一课：文件与格式 →](03-files-and-formats.md)
+
+[查资料的完整步骤](../guides/research-and-fact-checking.md) · [处理表格数字](../guides/data-workflows.md) · [上传与资料边界](../guides/privacy-and-cost.md)

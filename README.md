@@ -1,6 +1,6 @@
 # Jajison · 把 AI 用起来
 
-从 Windows/macOS、GitHub 与编程基础，到 Transformer、LLM、RAG、Agent 和质量交付的中文学习知识库。八条路线、20 篇课程与 16 篇指南，配套三个完整项目、原理实验和可运行代码。
+面向不懂计算机的人认识和使用 AI。主线覆盖文件、对话、写作、查资料、表格、文档、图片、学习，以及 Codex、WorkBuddy 的实际用法。12 条路线、52 篇路径文章，其中 16 篇日常使用指南；开发和原理内容按需展开，另附项目、实验与练习素材。
 
 博客目标地址：[jajison.github.io/jajison-blog](https://jajison.github.io/jajison-blog/)。本地修改、构建成功与线上已更新是不同状态，实际验证见 [记录](tutorial/editorial/validation.md)。
 

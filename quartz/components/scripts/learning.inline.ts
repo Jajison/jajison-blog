@@ -6,10 +6,12 @@ import {
   LearningProgress,
   CacheInputs,
 } from "../../util/learning"
+import { recommendRoute, Profile, Skill } from "../../util/advisor"
 
 const storageKey = "jajison-learning-v1"
 let memory: LearningProgress | null = null
 let storageBlocked = false
+let selectedProfile: Profile | null = null
 
 document.addEventListener("nav", () => {
   const root = document.getElementById("learning-data")
@@ -33,6 +35,78 @@ document.addEventListener("nav", () => {
     releaseExports()
   })
   document.documentElement.classList.add("learning-ready")
+  const advisor = document.querySelector<HTMLFormElement>("#learning-profile")
+  const advisorResult = document.querySelector<HTMLElement>("#advisor-result")
+  if (advisor && advisorResult) {
+    const renderAdvice = (profile: Profile) => {
+      const route = recommendRoute(profile)
+      const heading = document.createElement("h3")
+      heading.textContent = route.heading
+      const note = document.createElement("p")
+      note.textContent = route.note
+      const result = document.createElement("p")
+      result.className = "advisor-outcome"
+      result.textContent = "可检查的结果：" + route.result
+      const phases = document.createElement("div")
+      phases.className = "advisor-phases"
+      for (const phase of route.phases) {
+        const section = document.createElement("section")
+        const title = document.createElement("h4")
+        title.textContent = phase.title
+        const why = document.createElement("p")
+        why.textContent = phase.reason
+        const list = document.createElement("ol")
+        for (const slug of phase.slugs) {
+          const item = catalog.find((entry) => entry.slug === slug)
+          if (!item) continue
+          const li = document.createElement("li")
+          const link = document.createElement("a")
+          link.href = item.href
+          link.className = "internal"
+          link.textContent = item.title
+          li.append(link)
+          list.append(li)
+        }
+        section.append(title, why, list)
+        phases.append(section)
+      }
+      advisorResult.replaceChildren(heading, note, phases, result)
+      advisorResult.hidden = false
+    }
+    if (selectedProfile) {
+      for (const name of ["level", "goal", "platform", "pace"] as const) {
+        const field = advisor.elements.namedItem(name)
+        if (field instanceof HTMLSelectElement) field.value = selectedProfile[name]
+      }
+      advisor.querySelectorAll<HTMLInputElement>('[name="skills"]').forEach((field) => {
+        field.checked = selectedProfile!.skills.includes(field.value as Skill)
+      })
+      renderAdvice(selectedProfile)
+    }
+    advisor.addEventListener(
+      "submit",
+      (event) => {
+        event.preventDefault()
+        const values = new FormData(advisor)
+        const profile = {
+          level: values.get("level"),
+          goal: values.get("goal"),
+          platform: values.get("platform"),
+          pace: values.get("pace"),
+          skills: values.getAll("skills"),
+        } as Profile
+        selectedProfile = profile
+        renderAdvice(profile)
+        advisorResult.scrollIntoView({
+          block: "nearest",
+          behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+            ? "auto"
+            : "smooth",
+        })
+      },
+      { signal },
+    )
+  }
   const text = (selector: string, value: string) =>
     document.querySelectorAll<HTMLElement>(selector).forEach((element) => {
       element.textContent = value
@@ -72,12 +146,24 @@ document.addEventListener("nav", () => {
       notice("浏览器存储不可用或原记录损坏。当前标记仅在本次浏览中保留，请导出进度。")
   }
 
+  let filtersActive = false
+  const openBeforeFilter = new Map<HTMLDetailsElement, boolean>()
   const applyFilters = () => {
     const query = (document.querySelector<HTMLInputElement>("#course-filter")?.value ?? "")
       .trim()
       .toLocaleLowerCase()
     const track = document.querySelector<HTMLSelectElement>("#track-filter")?.value ?? ""
     const onlyUnread = document.querySelector<HTMLInputElement>("#unread-filter")?.checked ?? false
+    const hasFilters = Boolean(query || track || onlyUnread)
+    const optionalTracks = document.querySelectorAll<HTMLDetailsElement>("[data-optional-track]")
+    if (hasFilters && !filtersActive) {
+      optionalTracks.forEach((details) => openBeforeFilter.set(details, details.open))
+    } else if (!hasFilters && filtersActive) {
+      optionalTracks.forEach((details) => {
+        details.open = openBeforeFilter.get(details) ?? false
+      })
+      openBeforeFilter.clear()
+    }
     let visible = 0
     document.querySelectorAll<HTMLElement>("[data-course-entry]").forEach((entry) => {
       const show =
@@ -92,7 +178,12 @@ document.addEventListener("nav", () => {
         (entry) => !entry.hidden,
       )
     })
-    text("[data-filter-count]", "显示 " + visible + " / " + known.length + " 篇")
+    optionalTracks.forEach((details) => {
+      details.hidden = details.querySelector<HTMLElement>("[data-track-entry]")?.hidden ?? false
+      if (!details.hidden && hasFilters) details.open = true
+    })
+    filtersActive = hasFilters
+    text("[data-filter-count]", "匹配 " + visible + " / " + known.length + " 篇")
     const empty = document.querySelector<HTMLElement>("[data-filter-empty]")
     if (empty) empty.hidden = visible !== 0
   }
@@ -132,6 +223,21 @@ document.addEventListener("nav", () => {
   }
   if (storageBlocked) save()
   update()
+  if (current === "index" && window.location.hash) {
+    let target: HTMLElement | null = null
+    try {
+      target = document.getElementById(decodeURIComponent(window.location.hash.slice(1)))
+    } catch {
+      // An invalid fragment should not break reading tools.
+    }
+    const optional = target?.closest<HTMLDetailsElement>("[data-optional-track]")
+    if (optional) optional.open = true
+    if (target && (selectedProfile || optional)) {
+      requestAnimationFrame(() => {
+        if (!signal.aborted) target?.scrollIntoView({ block: "start", behavior: "auto" })
+      })
+    }
+  }
   window.addEventListener(
     "storage",
     (event) => {

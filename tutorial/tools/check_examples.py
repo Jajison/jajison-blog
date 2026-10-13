@@ -1,5 +1,7 @@
 """在临时副本验证教程中的真实命令，不改动原练习数据。"""
 import json
+import csv
+from decimal import Decimal
 import http.client
 from pathlib import Path
 import queue
@@ -42,6 +44,23 @@ class WorkshopTests(unittest.TestCase):
         path = self.work / "input/test.json"
         path.write_text(json.dumps(value, ensure_ascii=False), encoding="utf-8")
         return "input/test.json"
+
+    def test_daily_practice_materials_and_documented_totals(self):
+        folder = self.work / "daily-practice"
+        with (folder / "expenses.csv").open(encoding="utf-8", newline="") as handle:
+            rows = list(csv.DictReader(handle))
+        self.assertEqual(len(rows), 4)
+        self.assertEqual(len({row['id'] for row in rows}), 4)
+        self.assertTrue(all(row['currency'] == 'CNY' for row in rows))
+        total = sum(Decimal(row['amount']) for row in rows)
+        confirmed = sum(Decimal(row['amount']) for row in rows if row['status'] == '已确认')
+        pending = sum(Decimal(row['amount']) for row in rows if row['status'] == '待确认')
+        self.assertEqual((total, confirmed, pending), (450, 250, 200))
+        self.assertEqual(total, confirmed + pending)
+        for name in ('announcement.txt', 'meeting.txt'):
+            material = (folder / name).read_text(encoding='utf-8')
+            self.assertIn('虚构', material)
+            self.assertIn('确认', material)
 
     def test_preview_save_and_no_overwrite(self):
         original = (self.work / "input/records.json").read_bytes()

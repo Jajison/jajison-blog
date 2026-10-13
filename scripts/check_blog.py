@@ -27,6 +27,10 @@ class Page(HTMLParser):
         self.course_entries = []
         self.catalog = None
         self.read_control = False
+        self.profile_fields = set()
+        self.profile_skills = set()
+        self.optional_tracks = 0
+        self.optional_open = 0
         self.feed(source)
     def handle_starttag(self, tag, attrs):
         attr = dict(attrs)
@@ -55,6 +59,13 @@ class Page(HTMLParser):
             self.catalog = attr.get('data-catalog')
         if 'data-mark-read' in attr:
             self.read_control = True
+        if tag == 'select' and attr.get('name') in {'level', 'goal', 'platform', 'pace'}:
+            self.profile_fields.add(attr['name'])
+        if tag == 'input' and attr.get('name') == 'skills':
+            self.profile_skills.add(attr.get('value'))
+        if tag == 'details' and 'data-optional-track' in attr:
+            self.optional_tracks += 1
+            self.optional_open += int('open' in attr)
         for name in ('href', 'src'):
             if attr.get(name):
                 self.links.append((tag, attr[name]))
@@ -105,8 +116,8 @@ for file, page in pages.items():
 try:
     tracks = json.loads((ROOT / 'tutorial/curriculum.json').read_text(encoding='utf-8'))['tracks']
     planned = [slug for track in tracks for slug in track['pages']]
-    if len(tracks) != 8 or len(planned) != 36 or len(set(planned)) != 36:
-        errors.append('curriculum must contain 8 tracks and 36 unique articles')
+    if len(tracks) != 12 or len(planned) != 52 or len(set(planned)) != 52:
+        errors.append('curriculum must contain 12 tracks and 52 unique articles')
 except (OSError, ValueError, KeyError, TypeError) as error:
     errors.append(f'cannot read curriculum: {error}')
     planned = []
@@ -160,6 +171,12 @@ if labs:
 
 home = pages.get((OUTPUT / 'index.html').resolve())
 if home:
+    if not {'learning-advisor', 'learning-profile', 'advisor-result'}.issubset(home.ids):
+        errors.append('home is missing the learning profile form or result')
+    if home.profile_fields != {'level', 'goal', 'platform', 'pace'} or home.profile_skills != {'files', 'uploads', 'tables'}:
+        errors.append('learning profile must include purpose, baseline, system, time and concrete operations')
+    if home.optional_tracks != sum(bool(track.get('optional')) for track in tracks) or home.optional_open:
+        errors.append('optional development and theory tracks must be collapsed by default')
     if home.course_entries != planned:
         errors.append('home course entries must follow the complete curriculum order')
     try:
@@ -179,4 +196,4 @@ for slug in ['guides/math-for-ai', 'guides/neural-networks', 'guides/attention-a
 if errors:
     print('\n'.join(errors), file=sys.stderr)
     sys.exit(1)
-print(f'PASS: {len(files)} HTML pages, {count} local links/assets/anchors, 8 tracks / 36 articles / 20 core lessons, labs, rendered formulas, Pages subpath, complete downloads and search index.')
+print(f'PASS: {len(files)} HTML pages, {count} local links/assets/anchors, {len(tracks)} tracks / {len(planned)} articles / 20 core lessons, labs, rendered formulas, Pages subpath, complete downloads and search index.')

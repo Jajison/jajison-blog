@@ -88,6 +88,8 @@ for track in tracks:
     if track["id"] in track_ids:
         fail(curriculum_path, f"路线 id 重复：{track['id']}")
     track_ids.add(track["id"])
+    if not isinstance(track.get('optional'), bool):
+        fail(curriculum_path, f"路线 {track['id']} 必须标明 optional 布尔值")
     if not isinstance(track.get("pages"), list) or not track["pages"]:
         fail(curriculum_path, f"路线 {track['id']} 缺少页面列表")
         continue
@@ -100,8 +102,8 @@ for track in tracks:
         planned.append(slug)
         if not (ROOT / "content" / (slug + ".md")).is_file():
             fail(curriculum_path, f"计划文章不存在：{slug}")
-if len(tracks) != 8 or len(set(planned)) != 36:
-    fail(curriculum_path, "本版必须完整提供 8 条路线与 36 篇不同文章")
+if len(tracks) != 12 or len(set(planned)) != 52:
+    fail(curriculum_path, "本版必须完整提供 12 条路线与 52 篇不同文章")
 
 required = {"title", "description", "duration", "prerequisites", "outcome", "tags"}
 articles, lessons = {}, {}
@@ -246,5 +248,5 @@ else:
 if errors:
     print("\n".join(errors), file=sys.stderr)
     sys.exit(1)
-print(f"PASS：{len(markdown)} 份 Markdown，8 路线 / {len(articles)} 篇文章 / 20 基础课，{link_count} 个相对链接，7 张 SVG，实验室、先修无环、练习 ZIP 全集合与源码一致。")
+print(f"PASS：{len(markdown)} 份 Markdown，{len(tracks)} 路线 / {len(articles)} 篇文章 / 20 核心课，{link_count} 个相对链接，7 张 SVG，实验室、先修无环、练习 ZIP 全集合与源码一致。")
 print("范围：离线结构检查；不验证外部网址、网站路由或 AI 回答质量。")

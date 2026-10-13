@@ -1,12 +1,29 @@
 ---
 title: "术语白话表：遇到再查，不用背"
-description: "从电脑与 GitHub 到数学、Transformer、RAG 和 Agent，按场景查定义、易混点与实践入口。"
+description: "先查 AI 日常用法中的工具、材料、上传、结果与任务卡，再按需要查电脑、开发和模型术语。"
 tags: [查词, 入门]
 ---
 
 # 术语白话表：遇到再查，不用背
 
 一个术语如果不能帮助你做选择，可以暂时跳过。下面是本教程使用的简化解释。
+
+## 日常用 AI，先认识这些
+
+| 词 | 怎样理解 | 实际用法 |
+| --- | --- | --- |
+| 模型 / 产品 | 处理内容的核心能力 / 把能力、界面和工具组合起来的应用 | [工具地图](guides/ai-tool-types.md) |
+| 提示词 / 任务卡 | 你交给 AI 的要求；任务卡把目的、材料与结果写清 | [完整对话](guides/asking-and-iterating.md) |
+| 上下文 | 本次工作能看到的要求与相关信息 | [给资料](learn/02-context-and-checks.md) |
+| 上传 / 下载 | 把材料交给服务 / 把结果保存到设备 | [文件基础](learn/03-files-and-formats.md) |
+| 联网 / 引用 | 使用外部资料 / 指明依据的位置；引用还需要核对 | [查资料](guides/research-and-fact-checking.md) |
+| 草稿 / 交付文件 | 待核对内容 / 实际生成、能打开的成果 | [文档与演示](guides/slides-and-documents.md) |
+| 统计口径 | 哪些记录、状态、单位被计入数字 | [表格](guides/data-workflows.md) |
+| 工作目录 | 本次任务主要读取和保存文件的文件夹 | [WorkBuddy](guides/workbuddy-from-zero.md) |
+| Agent | 可以依据目标与结果选择下一步、使用工具的 AI 系统 | [会动手的 AI](guides/choose-an-ai-agent.md) |
+| Skill / 连接器 | 可复用方法 / 连接外部应用与资料的入口 | [重复任务](guides/workbuddy-workflows.md) |
+| 本地保存 | 结果保存在当前设备或浏览器；是否同步需另确认 | [Codex 练习](guides/codex-from-zero.md) |
+| 验收 | 根据原材料、文件或实际操作检查结果 | [个人流程](guides/personal-ai-workflow.md) |
 
 ## 电脑与环境
 

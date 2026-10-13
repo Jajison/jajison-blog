@@ -11,7 +11,60 @@
         "learn/02-context-and-checks",
         "learn/03-files-and-formats",
         "guides/network-and-security"
-      ]
+      ],
+      "optional": false
+    },
+    {
+      "id": "orientation",
+      "title": "选对起点，建立自己的 AI 用法",
+      "description": "按目的选工具，认识必需的基础，安排练习与预算。",
+      "level": "人人可读",
+      "pages": [
+        "guides/stack-and-goals",
+        "guides/ai-tool-types",
+        "guides/personal-ai-workflow",
+        "guides/privacy-and-cost"
+      ],
+      "optional": false
+    },
+    {
+      "id": "daily",
+      "title": "把 AI 用在写作、查资料与学习",
+      "description": "会提需求、会改结果、会查证，也会让 AI 帮自己学会。",
+      "level": "零编程实践",
+      "pages": [
+        "guides/asking-and-iterating",
+        "guides/writing-and-editing",
+        "guides/research-and-fact-checking",
+        "guides/learning-with-ai"
+      ],
+      "optional": false
+    },
+    {
+      "id": "office",
+      "title": "处理表格、文档、演示与图片",
+      "description": "从现有素材到可用文件，把数据、版面和实际效果检查清楚。",
+      "level": "零编程实践",
+      "pages": [
+        "guides/data-workflows",
+        "guides/slides-and-documents",
+        "guides/images-and-multimodal"
+      ],
+      "optional": false
+    },
+    {
+      "id": "harness-practice",
+      "title": "用 Codex、WorkBuddy 帮你完成任务",
+      "description": "认识会动手的 AI，做出小工具、整理文件，并核对交付结果。",
+      "level": "使用实践",
+      "pages": [
+        "guides/choose-an-ai-agent",
+        "guides/codex-from-zero",
+        "guides/codex-workflows",
+        "guides/workbuddy-from-zero",
+        "guides/workbuddy-workflows"
+      ],
+      "optional": false
     },
     {
       "id": "workspace",
@@ -25,7 +78,8 @@
         "learn/06-shell",
         "learn/07-python",
         "learn/08-debugging"
-      ]
+      ],
+      "optional": true
     },
     {
       "id": "build",
@@ -39,7 +93,8 @@
         "learn/11-build-with-ai",
         "learn/12-test-and-publish",
         "guides/data-and-sql"
-      ]
+      ],
+      "optional": true
     },
     {
       "id": "foundations",
@@ -51,7 +106,8 @@
         "guides/neural-networks",
         "learn/13-nlp",
         "guides/tokenization-and-embeddings"
-      ]
+      ],
+      "optional": true
     },
     {
       "id": "models",
@@ -66,14 +122,16 @@
         "guides/inference-and-deployment",
         "guides/model-selection",
         "guides/multimodal"
-      ]
+      ],
+      "optional": true
     },
     {
       "id": "retrieval",
       "title": "构建可靠的 RAG",
       "description": "切分、召回、重排、引用与检索评估。",
       "level": "工程实践",
-      "pages": ["learn/16-rag", "guides/rag-engineering"]
+      "pages": ["learn/16-rag", "guides/rag-engineering"],
+      "optional": true
     },
     {
       "id": "agents",
@@ -85,14 +143,16 @@
         "learn/18-tools-and-mcp",
         "learn/19-harness",
         "guides/agent-engineering"
-      ]
+      ],
+      "optional": true
     },
     {
       "id": "quality",
       "title": "评估、测试与持续交付",
       "description": "基线、失败样本、回归测试与上线门槛。",
       "level": "工程实践",
-      "pages": ["learn/20-evaluation", "guides/testing-and-delivery"]
+      "pages": ["learn/20-evaluation", "guides/testing-and-delivery"],
+      "optional": true
     }
   ]
 }

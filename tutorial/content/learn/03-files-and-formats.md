@@ -1,6 +1,6 @@
 ---
 title: "03｜文件、路径和格式：先找得到，再让 AI 处理"
-description: "认识路径、扩展名、UTF-8、JSON 与 CSV，正确保存和检查程序要读取的数据。"
+description: "找到文件和文件夹，分清文字、表格与其他格式，学会把资料交给 AI 并保存结果。"
 lesson: 3
 stage: "01 先用起来"
 duration: 15

@@ -418,6 +418,172 @@ svg.lucide {
 .home-section {
   padding-top: 64px;
 }
+.advisor {
+  scroll-margin-top: 30px;
+}
+.advisor-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+}
+.learning-ready .advisor-form.enhanced-only:not([hidden]) {
+  display: grid !important;
+}
+.advisor-skills {
+  grid-column: 1 / -1;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 14px;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 22px;
+}
+.advisor-skills legend {
+  font-size: 12px;
+  color: var(--gray);
+  padding: 0 5px;
+}
+.advisor-form .advisor-skills label {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 400;
+}
+.optional-track {
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  margin: 12px 0;
+  background: var(--surface);
+}
+.optional-track > summary {
+  cursor: pointer;
+  padding: 18px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.8;
+}
+.optional-track > summary > span {
+  display: inline-block;
+  margin-right: 12px;
+  font-size: 10px;
+  color: var(--gray);
+  font-weight: 400;
+}
+.optional-track > summary > small {
+  display: block;
+  font-size: 11px;
+  color: var(--gray);
+  font-weight: 400;
+  margin-top: 4px;
+}
+.optional-track .track-section {
+  padding: 20px;
+  border-top: 1px solid var(--rule);
+}
+.optional-track[hidden] {
+  display: none;
+}
+.optional-label {
+  margin-left: auto;
+  color: var(--gray);
+  font-size: 9px;
+  font-weight: 400;
+}
+.advisor-form label {
+  display: grid;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--darkgray);
+}
+.advisor-form select {
+  width: 100%;
+  min-height: 42px;
+  padding: 8px 10px;
+  color: var(--dark);
+  background: var(--light);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  font: inherit;
+  font-weight: 400;
+}
+.advisor-form button {
+  grid-column: 1 / -1;
+  justify-self: start;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 46px;
+  padding: 12px 17px;
+  border: 1px solid var(--secondary);
+  border-radius: 7px;
+  background: var(--secondary);
+  color: var(--light);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+}
+.advisor-result {
+  margin-top: 16px;
+  padding: 25px;
+  border: 1px solid var(--secondary);
+  border-radius: 10px;
+  background: var(--accent-soft);
+}
+.advisor-result[hidden] {
+  display: none;
+}
+.advisor-result h3 {
+  margin: 0 0 8px;
+  font-size: 19px;
+}
+.advisor-result > p {
+  margin: 0 0 16px;
+  font-size: 13px;
+  line-height: 1.8;
+}
+.advisor-phases {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.advisor-phases section {
+  padding: 18px;
+  border-radius: 8px;
+  background: var(--surface);
+}
+.advisor-phases h4 {
+  margin: 0 0 7px;
+  font-size: 14px;
+}
+.advisor-phases p {
+  margin: 0 0 12px;
+  font-size: 11px;
+  color: var(--gray);
+  line-height: 1.7;
+}
+.advisor-phases ol {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 12px;
+  line-height: 1.9;
+}
+.page[data-frame="tutorial"] .advisor-phases a {
+  display: block;
+  min-height: 30px;
+  padding: 3px 0;
+}
+.advisor-result .advisor-outcome {
+  margin: 17px 0 0;
+  font-weight: 600;
+}
 .section-heading {
   display: flex;
   align-items: end;
@@ -1590,6 +1756,14 @@ progress::-webkit-progress-value {
   }
 }
 @media (max-width: 600px) {
+  .advisor-form,
+  .advisor-phases {
+    grid-template-columns: 1fr;
+  }
+  .advisor-form,
+  .advisor-result {
+    padding: 18px;
+  }
   .attention-matrix th,
   .attention-matrix td {
     min-width: 74px;
